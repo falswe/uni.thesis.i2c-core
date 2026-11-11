@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  echo "Usage: $0 <interface> <port> [--keep-ansi]" >&2
+  exit 2
+}
+
+[[ $# -ge 2 && $# -le 3 ]] || usage
+interface=$1
+port=$2
+keep_ansi=${3:-}
+
+[[ $port =~ ^[0-9]+$ ]] && (( port >= 1 && port <= 65535 )) || usage
+[[ -z $keep_ansi || $keep_ansi == --keep-ansi ]] || usage
+
+capture() {
+  tshark -ql -i "$interface" \
+    -f "tcp port $port" \
+    -Y tcp.payload \
+    -T fields -e tcp.payload 2>/dev/null |
+    stdbuf -o0 xxd -r -p
+}
+
+if [[ $keep_ansi == --keep-ansi ]]; then
+  capture
+else
+  capture | sed -u $'s/\033\\[[0-9;]*[[:alpha:]]//g'
+fi

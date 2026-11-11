@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1294" height="344" viewBox="0 0 1294 344" font-family="Helvetica, Arial, sans-serif">
+<title>I2C write</title>
+<rect width="1294" height="344" fill="#ffffff"/>
+<text x="16" y="28" font-size="18" fill="#202124" text-anchor="start" font-weight="bold">I2C write</text>
+<text x="16" y="50" font-size="13" fill="#3c4043" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace">W 0x12 0x0b 0x0c   |   host: write(0x12, bytes([0x0b, 0x0c]))</text>
+<g transform="translate(64,0)">
+<line x1="81" y1="86" x2="81" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="117" y1="86" x2="117" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="153" y1="86" x2="153" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="189" y1="86" x2="189" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="225" y1="86" x2="225" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="261" y1="86" x2="261" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="297" y1="86" x2="297" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="333" y1="86" x2="333" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="369" y1="86" x2="369" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="513" y1="86" x2="513" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="549" y1="86" x2="549" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="585" y1="86" x2="585" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="621" y1="86" x2="621" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="657" y1="86" x2="657" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="693" y1="86" x2="693" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="729" y1="86" x2="729" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="765" y1="86" x2="765" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="801" y1="86" x2="801" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="837" y1="86" x2="837" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="873" y1="86" x2="873" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="909" y1="86" x2="909" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="945" y1="86" x2="945" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="981" y1="86" x2="981" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="1017" y1="86" x2="1017" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="1053" y1="86" x2="1053" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="1089" y1="86" x2="1089" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="1125" y1="86" x2="1125" y2="184" stroke="#e8eaed" stroke-dasharray="2 3"/>
+<line x1="36" y1="78" x2="36" y2="184" stroke="#80868b" stroke-dasharray="4 3"/>
+<text x="36" y="198" font-size="12" fill="#202124" text-anchor="middle" font-weight="bold">S</text>
+<line x1="1161" y1="78" x2="1161" y2="184" stroke="#80868b" stroke-dasharray="4 3"/>
+<text x="1161" y="198" font-size="12" fill="#202124" text-anchor="middle" font-weight="bold">P</text>
+<polyline points="399,88 399,84 501,84 501,88" fill="none" stroke="#e8710a" stroke-width="1.5"/>
+<text x="450" y="80" font-size="11" fill="#b85600" text-anchor="middle">clock stretch (optional)</text>
+<text x="-14" y="111" font-size="14" fill="#202124" text-anchor="end" font-weight="bold">SCL</text>
+<polyline points="0,92 36,92" fill="none" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="36,92 52,92 56,120 70,120 74,92 88,92 92,120 106,120 110,92 124,92 128,120 142,120 146,92 160,92 164,120 178,120 182,92 196,92 200,120 214,120 218,92 232,92 236,120 250,120 254,92 268,92 272,120 286,120 290,92 304,92 308,120 322,120 326,92 340,92 344,120 358,120 362,92 376,92 380,120 396,120" fill="none" stroke="#1f6fd1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="396,120 502,120" fill="none" stroke="#e8710a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="502,120 506,92 520,92 524,120 538,120 542,92 556,92 560,120 574,120 578,92 592,92 596,120 610,120 614,92 628,92 632,120 646,120 650,92 664,92 668,120 682,120 686,92 700,92 704,120 718,120 722,92 736,92 740,120 754,120 758,92 772,92 776,120 790,120 794,92 808,92 812,120 826,120 830,92 844,92 848,120 862,120 866,92 880,92 884,120 898,120 902,92 916,92 920,120 934,120 938,92 952,92 956,120 970,120 974,92 988,92 992,120 1006,120 1010,92 1024,92 1028,120 1042,120 1046,92 1060,92 1064,120 1078,120 1082,92 1096,92 1100,120 1114,120 1118,92 1132,92 1136,120 1150,120 1154,92 1161,92" fill="none" stroke="#1f6fd1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1161,92 1206,92" fill="none" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="-14" y="169" font-size="14" fill="#202124" text-anchor="end" font-weight="bold">SDA</text>
+<polyline points="0,150 34,150" fill="none" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="34,150 38,178 133,178 137,150 169,150 173,178 241,178 245,150 277,150 281,178 351,178" fill="none" stroke="#1f6fd1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="351,178 387,178" fill="none" stroke="#e8710a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="387,178 637,178 641,150 673,150 677,178 709,178 713,150 781,150" fill="none" stroke="#1f6fd1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="781,150 785,178 819,178" fill="none" stroke="#e8710a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="819,178 961,178 965,150 1033,150 1037,178 1107,178" fill="none" stroke="#1f6fd1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1107,178 1143,178" fill="none" stroke="#e8710a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1143,178 1159,178 1163,150" fill="none" stroke="#1f6fd1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1163,150 1206,150" fill="none" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="81" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="117" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="153" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">1</text>
+<text x="189" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="225" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="261" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">1</text>
+<text x="297" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="333" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">W</text>
+<text x="369" y="198" font-size="10" fill="#b85600" text-anchor="middle">ACK</text>
+<text x="513" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="549" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="585" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="621" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="657" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">1</text>
+<text x="693" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="729" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">1</text>
+<text x="765" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">1</text>
+<text x="801" y="198" font-size="10" fill="#b85600" text-anchor="middle">ACK</text>
+<text x="837" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="873" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="909" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="945" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="981" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">1</text>
+<text x="1017" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">1</text>
+<text x="1053" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="1089" y="198" font-size="12" fill="#1a5bb0" text-anchor="middle">0</text>
+<text x="1125" y="198" font-size="10" fill="#b85600" text-anchor="middle">ACK</text>
+<polyline points="57,204 57,208 339,208 339,204" fill="none" stroke="#1f6fd1" stroke-width="1.5"/>
+<text x="198" y="224" font-size="12" fill="#1a5bb0" text-anchor="middle">address 0x12 + W</text>
+<polyline points="489,204 489,208 771,208 771,204" fill="none" stroke="#1f6fd1" stroke-width="1.5"/>
+<text x="630" y="224" font-size="12" fill="#1a5bb0" text-anchor="middle">data 0x0b</text>
+<polyline points="813,204 813,208 1095,208 1095,204" fill="none" stroke="#1f6fd1" stroke-width="1.5"/>
+<text x="954" y="224" font-size="12" fill="#1a5bb0" text-anchor="middle">data 0x0c</text>
+</g>
+<line x1="16" y1="252" x2="42" y2="252" stroke="#1f6fd1" stroke-width="3" stroke-linecap="round"/>
+<text x="50" y="256" font-size="12" fill="#202124" text-anchor="start">Controller</text>
+<line x1="148" y1="252" x2="174" y2="252" stroke="#e8710a" stroke-width="3" stroke-linecap="round"/>
+<text x="182" y="256" font-size="12" fill="#202124" text-anchor="start">Target</text>
+<line x1="252" y1="252" x2="278" y2="252" stroke="#9aa0a6" stroke-width="3" stroke-linecap="round"/>
+<text x="286" y="256" font-size="12" fill="#202124" text-anchor="start">Nobody (bus idle, pull-up holds the line high)</text>
+<text x="16" y="274" font-size="11" fill="#5f6368" text-anchor="start">Open-drain: devices only pull lines low; high = released, pulled up by the resistor. Colour = device that controls the line, so a 1 bit or NACK is a released line owned by its sender.</text>
+<text x="16" y="292" font-size="11" fill="#5f6368" text-anchor="start">Controller sends address + W and every data byte; target ACKs each byte by pulling SDA low during the 9th clock.</text>
+<text x="16" y="310" font-size="11" fill="#5f6368" text-anchor="start">Here the target stretches after its address ACK while it arms reception; it can also stretch after any later byte.</text>
+<text x="16" y="328" font-size="11" fill="#5f6368" text-anchor="start">Clock stretch is optional and may occur in any SCL low phase: the target holds SCL low until it is ready, the controller waits for SCL to rise.</text>
+</svg>

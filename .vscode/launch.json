@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug pytest (with bringup)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "-rA",
+        "-q",
+        // "tests/test_roles.py::test_controller_arbitration_won",
+        "tests/test_arbitration.py",
+        "-s"
+      ],
+      "cwd": "${workspaceFolder}/host",
+      "env": {
+        "I2C_TEST_MANIFEST": "devices/peers.yaml",
+        "I2C_TEST_BRINGUP": "1"
+      },
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
+}

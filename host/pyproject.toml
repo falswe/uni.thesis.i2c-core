@@ -1,0 +1,22 @@
+[project]
+name = "i2c-test-host"
+version = "0.1.0"
+description = "Minimal TCP line host for session_v1 bridges"
+requires-python = ">=3.10"
+dependencies = [
+  "PyYAML>=6.0",
+  "pytest>=8.0",
+  "pytest-timeout>=2.3",
+]
+
+[tool.pytest.ini_options]
+# All tests are plain functions; disable class-based collection so dialect
+# classes that happen to start with "Test" (e.g. TesterV0) aren't mistaken
+# for test classes.
+python_classes = []
+markers = [
+  "both_manifests: run the test against both arbitration manifests",
+]
+
+[tool.setuptools.packages.find]
+include = ["i2c_test_host*"]

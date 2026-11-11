@@ -1,0 +1,720 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="1278" viewBox="0 0 1220 1278" font-family="Helvetica, Arial, sans-serif">
+<title>I2C multi-controller bus access policies: timeline S3</title>
+<defs>
+<pattern id="hold" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#9aa0a6" stroke-width="2.4"/></pattern>
+</defs>
+<rect width="1220" height="1278" fill="#ffffff"/>
+<text x="16" y="28" font-size="18" fill="#202124" text-anchor="start" font-weight="bold">Three controllers under Poisson load, short packets</text>
+<text x="16" y="46" font-size="12" fill="#3c4043" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace">S3: 3 Poisson sources, 25 % offered load each, m = 0.1 T<tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6"> = 2 ms; seeded arrivals, FIFO queues, empty at t = 0</tspan></text>
+<text x="16" y="64" font-size="12" fill="#3c4043" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace">50 ms = 2.5 T<tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6"> shown (t = 35.32 s to 35.37 s); verdicts and utilisation from the full 50 s run</tspan></text>
+<text x="16" y="82" font-size="12" fill="#3c4043" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace">T<tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6"> = 20 ms, t</tspan><tspan dy="3.6" font-size="8.64">buf</tspan><tspan dy="-3.6"> = 0.78 µs, r = 60 µs (measured), margin = 10 µs, t</tspan><tspan dy="3.6" font-size="8.64">idle</tspan><tspan dy="-3.6"> = 10 µs, W = 100 µs</tspan></text>
+<text x="16" y="100" font-size="12" fill="#3c4043" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace">T<tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6">: 1024 bytes × 9 bit / 800 kbit/s (set 1 Mbit/s) = 11.52 ms + 2.7 ms clock stretching = 14.22 ms, rounded up to 20 ms</tspan></text>
+<rect x="16" y="116" width="24" height="12" fill="#1f6fd1"/>
+<text x="46" y="126" font-size="12" fill="#202124" text-anchor="start">Controller A → target 0x10 (lowest address, wins ties)</text>
+<rect x="478.4" y="116" width="24" height="12" fill="#e8710a"/>
+<text x="508.4" y="126" font-size="12" fill="#202124" text-anchor="start">Controller B → target 0x20</text>
+<rect x="729.6" y="116" width="24" height="12" fill="#9334e6"/>
+<text x="759.6" y="126" font-size="12" fill="#202124" text-anchor="start">Controller C → target 0x30 (highest address)</text>
+<rect x="16" y="136" width="24" height="12" fill="#1f6fd1"/>
+<text x="46" y="146" font-size="12" fill="#202124" text-anchor="start">transmitting (colour = sending controller, label = target address)</text>
+<rect x="548" y="136" width="24" height="12" fill="#d2e3fc"/>
+<text x="578" y="146" font-size="12" fill="#202124" text-anchor="start">packet queued, competing</text>
+<rect x="16" y="156" width="24" height="12" fill="url(#hold)" stroke="#9aa0a6"/>
+<text x="46" y="166" font-size="12" fill="#202124" text-anchor="start">packet queued, holding off (re-arm r or policy deferral)</text>
+<path d="M484.5,158.5L491.5,165.5M484.5,165.5L491.5,158.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round"/>
+<text x="506" y="166" font-size="12" fill="#202124" text-anchor="start">started together, lost arbitration</text>
+<line x1="784.8" y1="156" x2="784.8" y2="167" stroke="#1f6fd1" stroke-width="1.5"/>
+<text x="802.8" y="166" font-size="12" fill="#202124" text-anchor="start">packet arrival</text>
+<text x="16" y="186" font-size="12" fill="#202124" text-anchor="start">Arbitration is decided by the target address: of the controllers that START together, the one sending to the lowest address wins.</text>
+<text x="16" y="222" font-size="14" fill="#202124" text-anchor="start" font-weight="bold">Policy 1 · Re-arm and retry (baseline)</text>
+<text x="438.54" y="222" font-size="13" fill="#137333" text-anchor="start" font-weight="bold">every controller gets the bus · worst access delay from arrival 80.0 ms = 4.00 T<tspan dy="3.9" font-size="9.36">max</tspan></text>
+<text x="16" y="239" font-size="12" fill="#5f6368" text-anchor="start">Bus busy → wait for STOP; arbitration lost → retry at once; after its own STOP a controller needs its re-arm time r before it competes again.</text>
+<rect x="114" y="249" width="1012" height="105" fill="none" class="plot-area"/>
+<line x1="120" y1="265" x2="120" y2="354" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="220" y1="265" x2="220" y2="354" stroke="#e8eaed" stroke-width="1"/>
+<line x1="320" y1="265" x2="320" y2="354" stroke="#e8eaed" stroke-width="1"/>
+<line x1="420" y1="265" x2="420" y2="354" stroke="#e8eaed" stroke-width="1"/>
+<line x1="520" y1="265" x2="520" y2="354" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="620" y1="265" x2="620" y2="354" stroke="#e8eaed" stroke-width="1"/>
+<line x1="720" y1="265" x2="720" y2="354" stroke="#e8eaed" stroke-width="1"/>
+<line x1="820" y1="265" x2="820" y2="354" stroke="#e8eaed" stroke-width="1"/>
+<line x1="920" y1="265" x2="920" y2="354" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="1020" y1="265" x2="1020" y2="354" stroke="#e8eaed" stroke-width="1"/>
+<line x1="1120" y1="265" x2="1120" y2="354" stroke="#e8eaed" stroke-width="1"/>
+<text x="108" y="285" font-size="12" fill="#202124" text-anchor="end" font-weight="bold">bus owner</text>
+<rect x="120" y="267" width="1000" height="28" fill="#f1f3f4"/>
+<rect x="120" y="267" width="29.44" height="28" fill="#e8710a" class="data"/>
+<rect x="149.45" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="169.45" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="189.47" y="267" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="209.47" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="229.48" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="249.48" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="269.5" y="267" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="289.5" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="309.52" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="329.52" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="349.53" y="267" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="369.53" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="389.55" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="409.55" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="429.56" y="267" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="449.56" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="469.58" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="489.58" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="509.59" y="267" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="529.59" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="549.61" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="569.61" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="589.63" y="267" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="609.63" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="629.64" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="649.64" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="669.66" y="267" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="689.66" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="709.67" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="729.67" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="749.69" y="267" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="769.69" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="789.7" y="267" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="809.7" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="830.9" y="267" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="850.9" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="870.92" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="890.92" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="910.93" y="267" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="930.93" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="950.95" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="970.95" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="990.97" y="267" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="1010.97" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="1030.98" y="267" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="1050.98" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="1071" y="267" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="1091" y="285.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="1111.01" y="267" width="8.99" height="28" fill="#9334e6" class="data"/>
+<text x="1132" y="278" font-size="11" fill="#202124" text-anchor="start">utilisation</text>
+<text x="1132" y="292" font-size="11" fill="#202124" text-anchor="start" font-weight="bold">75.2 %</text>
+<text x="108" y="314" font-size="12" fill="#1f6fd1" text-anchor="end" font-weight="bold">A → 0x10</text>
+<rect x="120" y="304" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="131.66" y="304" width="17.8" height="12" fill="#d2e3fc" class="data"/>
+<rect x="149.45" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="189.45" y="304" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="190.65" y="304" width="38.83" height="12" fill="#d2e3fc" class="data"/>
+<rect x="229.48" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="269.48" y="304" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="270.68" y="304" width="38.83" height="12" fill="#d2e3fc" class="data"/>
+<rect x="309.52" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="349.52" y="304" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="350.72" y="304" width="38.83" height="12" fill="#d2e3fc" class="data"/>
+<rect x="389.55" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="429.55" y="304" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="430.75" y="304" width="38.83" height="12" fill="#d2e3fc" class="data"/>
+<rect x="469.58" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="509.58" y="304" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="510.78" y="304" width="38.83" height="12" fill="#d2e3fc" class="data"/>
+<rect x="549.61" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="589.61" y="304" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="590.81" y="304" width="38.83" height="12" fill="#d2e3fc" class="data"/>
+<rect x="629.64" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="669.64" y="304" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="670.84" y="304" width="38.83" height="12" fill="#d2e3fc" class="data"/>
+<rect x="709.67" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="849.96" y="304" width="20.96" height="12" fill="#d2e3fc" class="data"/>
+<rect x="870.92" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="912.51" y="304" width="38.44" height="12" fill="#d2e3fc" class="data"/>
+<rect x="950.95" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="990.95" y="304" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="992.15" y="304" width="38.83" height="12" fill="#d2e3fc" class="data"/>
+<rect x="1030.98" y="304" width="40" height="12" fill="#1f6fd1" class="data"/>
+<line x1="131.66" y1="299" x2="131.66" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="179.01" y1="299" x2="179.01" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="206.62" y1="299" x2="206.62" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="230.82" y1="299" x2="230.82" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="290.19" y1="299" x2="290.19" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="391.19" y1="299" x2="391.19" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="430.86" y1="299" x2="430.86" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="622.18" y1="299" x2="622.18" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="849.96" y1="299" x2="849.96" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="912.51" y1="299" x2="912.51" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="952.81" y1="299" x2="952.81" y2="304" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<text x="1132" y="314" font-size="12" fill="#202124" text-anchor="start">11 turns</text>
+<text x="108" y="332" font-size="12" fill="#e8710a" text-anchor="end" font-weight="bold">B → 0x20</text>
+<rect x="120" y="322" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="322" width="29.44" height="12" fill="#e8710a" class="data"/>
+<rect x="149.44" y="322" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="150.64" y="322" width="38.83" height="12" fill="#fde3cc" class="data"/>
+<rect x="189.47" y="322" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="229.47" y="322" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="230.67" y="322" width="38.83" height="12" fill="#fde3cc" class="data"/>
+<rect x="269.5" y="322" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="309.5" y="322" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="310.7" y="322" width="38.83" height="12" fill="#fde3cc" class="data"/>
+<rect x="349.53" y="322" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="389.53" y="322" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="390.73" y="322" width="38.83" height="12" fill="#fde3cc" class="data"/>
+<rect x="429.56" y="322" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="469.56" y="322" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="470.76" y="322" width="38.83" height="12" fill="#fde3cc" class="data"/>
+<rect x="509.59" y="322" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="549.59" y="322" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="550.79" y="322" width="38.83" height="12" fill="#fde3cc" class="data"/>
+<rect x="589.63" y="322" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="629.63" y="322" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="630.83" y="322" width="38.83" height="12" fill="#fde3cc" class="data"/>
+<rect x="669.66" y="322" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="724.78" y="322" width="24.91" height="12" fill="#fde3cc" class="data"/>
+<rect x="749.69" y="322" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="908.15" y="322" width="2.78" height="12" fill="#fde3cc" class="data"/>
+<rect x="910.93" y="322" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="1031.74" y="322" width="39.25" height="12" fill="#fde3cc" class="data"/>
+<rect x="1071" y="322" width="40" height="12" fill="#e8710a" class="data"/>
+<line x1="140.05" y1="317" x2="140.05" y2="322" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="141.12" y1="317" x2="141.12" y2="322" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="167.32" y1="317" x2="167.32" y2="322" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="245.45" y1="317" x2="245.45" y2="322" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="323.89" y1="317" x2="323.89" y2="322" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="371.29" y1="317" x2="371.29" y2="322" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="566.33" y1="317" x2="566.33" y2="322" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="724.78" y1="317" x2="724.78" y2="322" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="908.15" y1="317" x2="908.15" y2="322" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="1031.74" y1="317" x2="1031.74" y2="322" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<text x="1132" y="332" font-size="12" fill="#202124" text-anchor="start">10 turns</text>
+<text x="108" y="350" font-size="12" fill="#9334e6" text-anchor="end" font-weight="bold">C → 0x30</text>
+<rect x="120" y="340" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="340" width="669.7" height="12" fill="#ead9fb" class="data"/>
+<rect x="789.7" y="340" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="829.7" y="340" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="830.9" y="340" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="870.9" y="340" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="872.1" y="340" width="118.86" height="12" fill="#ead9fb" class="data"/>
+<rect x="990.97" y="340" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="1030.97" y="340" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="1032.17" y="340" width="78.85" height="12" fill="#ead9fb" class="data"/>
+<rect x="1111.01" y="340" width="8.99" height="12" fill="#9334e6" class="data"/>
+<line x1="153.94" y1="335" x2="153.94" y2="340" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="540.19" y1="335" x2="540.19" y2="340" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="737.82" y1="335" x2="737.82" y2="340" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="1078.54" y1="335" x2="1078.54" y2="340" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<path d="M145.95,342.5L152.95,349.5M145.95,349.5L152.95,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M185.97,342.5L192.97,349.5M185.97,349.5L192.97,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M225.98,342.5L232.98,349.5M225.98,349.5L232.98,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M266,342.5L273,349.5M266,349.5L273,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M306.02,342.5L313.02,349.5M306.02,349.5L313.02,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M346.03,342.5L353.03,349.5M346.03,349.5L353.03,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M386.05,342.5L393.05,349.5M386.05,349.5L393.05,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M426.06,342.5L433.06,349.5M426.06,349.5L433.06,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M466.08,342.5L473.08,349.5M466.08,349.5L473.08,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M506.09,342.5L513.09,349.5M506.09,349.5L513.09,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M546.11,342.5L553.11,349.5M546.11,349.5L553.11,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M586.13,342.5L593.13,349.5M586.13,349.5L593.13,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M626.14,342.5L633.14,349.5M626.14,349.5L633.14,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M666.16,342.5L673.16,349.5M666.16,349.5L673.16,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M706.17,342.5L713.17,349.5M706.17,349.5L713.17,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M746.19,342.5L753.19,349.5M746.19,349.5L753.19,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M907.43,342.5L914.43,349.5M907.43,349.5L914.43,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M947.45,342.5L954.45,349.5M947.45,349.5L954.45,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M1067.5,342.5L1074.5,349.5M1067.5,349.5L1074.5,342.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<text x="1132" y="350" font-size="12" fill="#202124" text-anchor="start">4 turns</text>
+<line x1="16" y1="368" x2="1204" y2="368" stroke="#e8eaed" stroke-width="1"/>
+<text x="16" y="390" font-size="14" fill="#202124" text-anchor="start" font-weight="bold">Policy 2 · Fixed post-ownership deferral</text>
+<text x="438.54" y="390" font-size="13" fill="#c5221f" text-anchor="start" font-weight="bold">overloaded: the queues of A, B and C grow without bound</text>
+<text x="16" y="407" font-size="12" fill="#5f6368" text-anchor="start">After its own STOP a controller waits T<tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6"> + margin before it competes again.</tspan></text>
+<rect x="114" y="417" width="1012" height="105" fill="none" class="plot-area"/>
+<line x1="120" y1="433" x2="120" y2="522" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="220" y1="433" x2="220" y2="522" stroke="#e8eaed" stroke-width="1"/>
+<line x1="320" y1="433" x2="320" y2="522" stroke="#e8eaed" stroke-width="1"/>
+<line x1="420" y1="433" x2="420" y2="522" stroke="#e8eaed" stroke-width="1"/>
+<line x1="520" y1="433" x2="520" y2="522" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="620" y1="433" x2="620" y2="522" stroke="#e8eaed" stroke-width="1"/>
+<line x1="720" y1="433" x2="720" y2="522" stroke="#e8eaed" stroke-width="1"/>
+<line x1="820" y1="433" x2="820" y2="522" stroke="#e8eaed" stroke-width="1"/>
+<line x1="920" y1="433" x2="920" y2="522" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="1020" y1="433" x2="1020" y2="522" stroke="#e8eaed" stroke-width="1"/>
+<line x1="1120" y1="433" x2="1120" y2="522" stroke="#e8eaed" stroke-width="1"/>
+<text x="108" y="453" font-size="12" fill="#202124" text-anchor="end" font-weight="bold">bus owner</text>
+<rect x="120" y="435" width="1000" height="28" fill="#f1f3f4"/>
+<rect x="122.62" y="435" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="142.62" y="453.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="257.05" y="435" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="277.05" y="453.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="300.91" y="435" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="320.91" y="453.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="562.82" y="435" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="582.82" y="453.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="697.25" y="435" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="717.25" y="453.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="741.11" y="435" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="761.11" y="453.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="1003.02" y="435" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="1023.02" y="453.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<text x="1132" y="446" font-size="11" fill="#202124" text-anchor="start">utilisation</text>
+<text x="1132" y="460" font-size="11" fill="#202124" text-anchor="start" font-weight="bold">27.3 %</text>
+<text x="108" y="482" font-size="12" fill="#1f6fd1" text-anchor="end" font-weight="bold">A → 0x10</text>
+<rect x="120" y="472" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="472" width="2.62" height="12" fill="url(#hold)" class="data"/>
+<rect x="122.62" y="472" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="162.62" y="472" width="400.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="282.9" y="472.5" width="159.64" height="12.5" fill="#ffffff"/>
+<text x="285.9" y="482" font-size="10" fill="#202124" text-anchor="start">holding off T<tspan dy="3" font-size="7.2">max</tspan><tspan dy="-3"> + margin</tspan></text>
+<rect x="562.82" y="472" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="602.82" y="472" width="400.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="1003.02" y="472" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="1043.02" y="472" width="76.98" height="12" fill="url(#hold)" class="data"/>
+<line x1="131.66" y1="467" x2="131.66" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="179.01" y1="467" x2="179.01" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="206.62" y1="467" x2="206.62" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="230.82" y1="467" x2="230.82" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="290.19" y1="467" x2="290.19" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="391.19" y1="467" x2="391.19" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="430.86" y1="467" x2="430.86" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="622.18" y1="467" x2="622.18" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="849.96" y1="467" x2="849.96" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="912.51" y1="467" x2="912.51" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="952.81" y1="467" x2="952.81" y2="472" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<text x="1132" y="482" font-size="12" fill="#202124" text-anchor="start">3 turns</text>
+<text x="108" y="500" font-size="12" fill="#e8710a" text-anchor="end" font-weight="bold">B → 0x20</text>
+<rect x="120" y="490" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="490" width="137.05" height="12" fill="url(#hold)" class="data"/>
+<rect x="257.05" y="490" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="297.05" y="490" width="400.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="697.25" y="490" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="737.25" y="490" width="382.75" height="12" fill="url(#hold)" class="data"/>
+<line x1="140.05" y1="485" x2="140.05" y2="490" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="141.12" y1="485" x2="141.12" y2="490" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="167.32" y1="485" x2="167.32" y2="490" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="245.45" y1="485" x2="245.45" y2="490" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="323.89" y1="485" x2="323.89" y2="490" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="371.29" y1="485" x2="371.29" y2="490" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="566.33" y1="485" x2="566.33" y2="490" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="724.78" y1="485" x2="724.78" y2="490" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="908.15" y1="485" x2="908.15" y2="490" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="1031.74" y1="485" x2="1031.74" y2="490" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<text x="1132" y="500" font-size="12" fill="#202124" text-anchor="start">2 turns</text>
+<text x="108" y="518" font-size="12" fill="#9334e6" text-anchor="end" font-weight="bold">C → 0x30</text>
+<rect x="120" y="508" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="508" width="180.91" height="12" fill="url(#hold)" class="data"/>
+<rect x="300.91" y="508" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="340.91" y="508" width="400.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="741.11" y="508" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="781.11" y="508" width="338.89" height="12" fill="url(#hold)" class="data"/>
+<line x1="153.94" y1="503" x2="153.94" y2="508" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="540.19" y1="503" x2="540.19" y2="508" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="737.82" y1="503" x2="737.82" y2="508" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="1078.54" y1="503" x2="1078.54" y2="508" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<text x="1132" y="518" font-size="12" fill="#202124" text-anchor="start">2 turns</text>
+<line x1="16" y1="536" x2="1204" y2="536" stroke="#e8eaed" stroke-width="1"/>
+<text x="16" y="558" font-size="14" fill="#202124" text-anchor="start" font-weight="bold">Policy 3 · Idle-window deferral</text>
+<text x="438.54" y="558" font-size="13" fill="#137333" text-anchor="start" font-weight="bold">every controller gets the bus · worst access delay from arrival 46.6 ms = 2.33 T<tspan dy="3.9" font-size="9.36">max</tspan></text>
+<text x="16" y="575" font-size="12" fill="#5f6368" text-anchor="start">After its own STOP a controller waits until the bus has been idle for t<tspan dy="3.6" font-size="8.64">idle</tspan><tspan dy="-3.6">; controllers that have not had their turn compete as soon as the bus is free.</tspan></text>
+<rect x="114" y="585" width="1012" height="105" fill="none" class="plot-area"/>
+<line x1="120" y1="601" x2="120" y2="690" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="220" y1="601" x2="220" y2="690" stroke="#e8eaed" stroke-width="1"/>
+<line x1="320" y1="601" x2="320" y2="690" stroke="#e8eaed" stroke-width="1"/>
+<line x1="420" y1="601" x2="420" y2="690" stroke="#e8eaed" stroke-width="1"/>
+<line x1="520" y1="601" x2="520" y2="690" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="620" y1="601" x2="620" y2="690" stroke="#e8eaed" stroke-width="1"/>
+<line x1="720" y1="601" x2="720" y2="690" stroke="#e8eaed" stroke-width="1"/>
+<line x1="820" y1="601" x2="820" y2="690" stroke="#e8eaed" stroke-width="1"/>
+<line x1="920" y1="601" x2="920" y2="690" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="1020" y1="601" x2="1020" y2="690" stroke="#e8eaed" stroke-width="1"/>
+<line x1="1120" y1="601" x2="1120" y2="690" stroke="#e8eaed" stroke-width="1"/>
+<text x="108" y="621" font-size="12" fill="#202124" text-anchor="end" font-weight="bold">bus owner</text>
+<rect x="120" y="603" width="1000" height="28" fill="#f1f3f4"/>
+<rect x="120" y="603" width="31.47" height="28" fill="#e8710a" class="data"/>
+<rect x="151.48" y="603" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="171.48" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="191.68" y="603" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="211.68" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="231.7" y="603" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="251.7" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="271.71" y="603" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="291.71" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="311.91" y="603" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="331.91" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="351.93" y="603" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="371.93" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="391.94" y="603" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="411.94" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="432.14" y="603" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="452.14" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="472.16" y="603" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="492.16" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="512.18" y="603" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="532.18" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="552.38" y="603" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="572.38" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="592.39" y="603" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="612.39" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="632.41" y="603" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="652.41" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="672.61" y="603" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="692.61" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="712.62" y="603" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="732.62" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="752.64" y="603" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="772.64" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="792.84" y="603" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="812.84" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="832.85" y="603" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="852.85" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="872.87" y="603" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="892.87" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="913.07" y="603" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="933.07" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="953.08" y="603" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="973.08" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="993.1" y="603" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="1013.1" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="1033.3" y="603" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="1053.3" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="1073.32" y="603" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="1093.32" y="621.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="1113.33" y="603" width="6.67" height="28" fill="#9334e6" class="data"/>
+<text x="1132" y="614" font-size="11" fill="#202124" text-anchor="start">utilisation</text>
+<text x="1132" y="628" font-size="11" fill="#202124" text-anchor="start" font-weight="bold">75.2 %</text>
+<text x="108" y="650" font-size="12" fill="#1f6fd1" text-anchor="end" font-weight="bold">A → 0x10</text>
+<rect x="120" y="640" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="640" width="71.68" height="12" fill="url(#hold)" class="data"/>
+<rect x="191.68" y="640" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="231.68" y="640" width="80.23" height="12" fill="url(#hold)" class="data"/>
+<rect x="311.91" y="640" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="351.91" y="640" width="80.23" height="12" fill="url(#hold)" class="data"/>
+<rect x="432.14" y="640" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="472.14" y="640" width="80.23" height="12" fill="url(#hold)" class="data"/>
+<rect x="552.38" y="640" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="592.38" y="640" width="80.23" height="12" fill="url(#hold)" class="data"/>
+<rect x="672.61" y="640" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="712.61" y="640" width="80.23" height="12" fill="url(#hold)" class="data"/>
+<rect x="792.84" y="640" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="832.84" y="640" width="80.23" height="12" fill="url(#hold)" class="data"/>
+<rect x="913.07" y="640" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="953.07" y="640" width="80.23" height="12" fill="url(#hold)" class="data"/>
+<rect x="1033.3" y="640" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="1073.3" y="640" width="46.7" height="12" fill="url(#hold)" class="data"/>
+<line x1="131.66" y1="635" x2="131.66" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="179.01" y1="635" x2="179.01" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="206.62" y1="635" x2="206.62" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="230.82" y1="635" x2="230.82" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="290.19" y1="635" x2="290.19" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="391.19" y1="635" x2="391.19" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="430.86" y1="635" x2="430.86" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="622.18" y1="635" x2="622.18" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="849.96" y1="635" x2="849.96" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="912.51" y1="635" x2="912.51" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="952.81" y1="635" x2="952.81" y2="640" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<text x="1132" y="650" font-size="12" fill="#202124" text-anchor="start">8 turns</text>
+<text x="108" y="668" font-size="12" fill="#e8710a" text-anchor="end" font-weight="bold">B → 0x20</text>
+<rect x="120" y="658" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="658" width="31.47" height="12" fill="#e8710a" class="data"/>
+<rect x="151.47" y="658" width="40.22" height="12" fill="url(#hold)" class="data"/>
+<rect x="191.68" y="658" width="40.02" height="12" fill="#fde3cc" class="data"/>
+<rect x="231.7" y="658" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="271.7" y="658" width="40.22" height="12" fill="url(#hold)" class="data"/>
+<rect x="311.91" y="658" width="40.02" height="12" fill="#fde3cc" class="data"/>
+<rect x="351.93" y="658" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="391.93" y="658" width="40.22" height="12" fill="url(#hold)" class="data"/>
+<rect x="432.14" y="658" width="40.02" height="12" fill="#fde3cc" class="data"/>
+<rect x="472.16" y="658" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="512.16" y="658" width="40.22" height="12" fill="url(#hold)" class="data"/>
+<rect x="552.38" y="658" width="40.02" height="12" fill="#fde3cc" class="data"/>
+<rect x="592.39" y="658" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="632.39" y="658" width="40.22" height="12" fill="url(#hold)" class="data"/>
+<rect x="672.61" y="658" width="40.02" height="12" fill="#fde3cc" class="data"/>
+<rect x="712.62" y="658" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="752.62" y="658" width="40.22" height="12" fill="url(#hold)" class="data"/>
+<rect x="792.84" y="658" width="40.02" height="12" fill="#fde3cc" class="data"/>
+<rect x="832.85" y="658" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="872.85" y="658" width="40.22" height="12" fill="url(#hold)" class="data"/>
+<rect x="913.07" y="658" width="40.02" height="12" fill="#fde3cc" class="data"/>
+<rect x="953.08" y="658" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="993.08" y="658" width="40.22" height="12" fill="url(#hold)" class="data"/>
+<rect x="1033.3" y="658" width="40.02" height="12" fill="#fde3cc" class="data"/>
+<rect x="1073.32" y="658" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="1113.32" y="658" width="6.68" height="12" fill="url(#hold)" class="data"/>
+<line x1="140.05" y1="653" x2="140.05" y2="658" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="141.12" y1="653" x2="141.12" y2="658" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="167.32" y1="653" x2="167.32" y2="658" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="245.45" y1="653" x2="245.45" y2="658" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="323.89" y1="653" x2="323.89" y2="658" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="371.29" y1="653" x2="371.29" y2="658" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="566.33" y1="653" x2="566.33" y2="658" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="724.78" y1="653" x2="724.78" y2="658" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="908.15" y1="653" x2="908.15" y2="658" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="1031.74" y1="653" x2="1031.74" y2="658" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<path d="M188.18,660.5L195.18,667.5M188.18,667.5L195.18,660.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M308.41,660.5L315.41,667.5M308.41,667.5L315.41,660.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M428.64,660.5L435.64,667.5M428.64,667.5L435.64,660.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M548.88,660.5L555.88,667.5M548.88,667.5L555.88,660.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M669.11,660.5L676.11,667.5M669.11,667.5L676.11,660.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M789.34,660.5L796.34,667.5M789.34,667.5L796.34,660.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M909.57,660.5L916.57,667.5M909.57,667.5L916.57,660.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M1029.8,660.5L1036.8,667.5M1029.8,667.5L1036.8,660.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<text x="1132" y="668" font-size="12" fill="#202124" text-anchor="start">8 turns</text>
+<text x="108" y="686" font-size="12" fill="#9334e6" text-anchor="end" font-weight="bold">C → 0x30</text>
+<rect x="120" y="676" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="676" width="31.48" height="12" fill="#ead9fb" class="data"/>
+<rect x="151.48" y="676" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="191.48" y="676" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="192.68" y="676" width="79.03" height="12" fill="#ead9fb" class="data"/>
+<rect x="271.71" y="676" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="311.71" y="676" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="312.91" y="676" width="79.03" height="12" fill="#ead9fb" class="data"/>
+<rect x="391.94" y="676" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="431.94" y="676" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="433.14" y="676" width="79.03" height="12" fill="#ead9fb" class="data"/>
+<rect x="512.18" y="676" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="552.18" y="676" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="553.38" y="676" width="79.03" height="12" fill="#ead9fb" class="data"/>
+<rect x="632.41" y="676" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="672.41" y="676" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="673.61" y="676" width="79.03" height="12" fill="#ead9fb" class="data"/>
+<rect x="752.64" y="676" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="792.64" y="676" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="793.84" y="676" width="79.03" height="12" fill="#ead9fb" class="data"/>
+<rect x="872.87" y="676" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="912.87" y="676" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="914.07" y="676" width="79.03" height="12" fill="#ead9fb" class="data"/>
+<rect x="993.1" y="676" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="1033.1" y="676" width="1.2" height="12" fill="url(#hold)" class="data"/>
+<rect x="1034.3" y="676" width="79.03" height="12" fill="#ead9fb" class="data"/>
+<rect x="1113.33" y="676" width="6.67" height="12" fill="#9334e6" class="data"/>
+<line x1="153.94" y1="671" x2="153.94" y2="676" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="540.19" y1="671" x2="540.19" y2="676" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="737.82" y1="671" x2="737.82" y2="676" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="1078.54" y1="671" x2="1078.54" y2="676" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<path d="M228.2,678.5L235.2,685.5M228.2,685.5L235.2,678.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M348.43,678.5L355.43,685.5M348.43,685.5L355.43,678.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M468.66,678.5L475.66,685.5M468.66,685.5L475.66,678.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M588.89,678.5L595.89,685.5M588.89,685.5L595.89,678.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M709.12,678.5L716.12,685.5M709.12,685.5L716.12,678.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M829.35,678.5L836.35,685.5M829.35,685.5L836.35,678.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M949.58,678.5L956.58,685.5M949.58,685.5L956.58,678.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<path d="M1069.82,678.5L1076.82,685.5M1069.82,685.5L1076.82,678.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<text x="1132" y="686" font-size="12" fill="#202124" text-anchor="start">9 turns</text>
+<line x1="16" y1="704" x2="1204" y2="704" stroke="#e8eaed" stroke-width="1"/>
+<text x="16" y="726" font-size="14" fill="#202124" text-anchor="start" font-weight="bold">Policy 4 · Probe and random backoff</text>
+<text x="438.54" y="726" font-size="13" fill="#137333" text-anchor="start" font-weight="bold">every controller gets the bus · worst access delay from arrival 47.7 ms = 2.38 T<tspan dy="3.9" font-size="9.36">max</tspan></text>
+<text x="16" y="743" font-size="12" fill="#5f6368" text-anchor="start">Before every attempt a controller probes the bus; bus busy or arbitration lost → back off a random time in (0, W] and probe again; after its own STOP it waits</text>
+<text x="16" y="760" font-size="12" fill="#5f6368" text-anchor="start">r plus one such backoff.</text>
+<rect x="114" y="770" width="1012" height="105" fill="none" class="plot-area"/>
+<line x1="120" y1="786" x2="120" y2="875" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="220" y1="786" x2="220" y2="875" stroke="#e8eaed" stroke-width="1"/>
+<line x1="320" y1="786" x2="320" y2="875" stroke="#e8eaed" stroke-width="1"/>
+<line x1="420" y1="786" x2="420" y2="875" stroke="#e8eaed" stroke-width="1"/>
+<line x1="520" y1="786" x2="520" y2="875" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="620" y1="786" x2="620" y2="875" stroke="#e8eaed" stroke-width="1"/>
+<line x1="720" y1="786" x2="720" y2="875" stroke="#e8eaed" stroke-width="1"/>
+<line x1="820" y1="786" x2="820" y2="875" stroke="#e8eaed" stroke-width="1"/>
+<line x1="920" y1="786" x2="920" y2="875" stroke="#c4c7cc" stroke-width="1"/>
+<line x1="1020" y1="786" x2="1020" y2="875" stroke="#e8eaed" stroke-width="1"/>
+<line x1="1120" y1="786" x2="1120" y2="875" stroke="#e8eaed" stroke-width="1"/>
+<text x="108" y="806" font-size="12" fill="#202124" text-anchor="end" font-weight="bold">bus owner</text>
+<rect x="120" y="788" width="1000" height="28" fill="#f1f3f4"/>
+<rect x="120" y="788" width="4.13" height="28" fill="#1f6fd1" class="data"/>
+<rect x="124.26" y="788" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="144.26" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="164.75" y="788" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="184.75" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="205.16" y="788" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="225.16" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="245.53" y="788" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="265.53" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="286.23" y="788" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="306.23" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="326.61" y="788" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="346.61" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="367.15" y="788" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="387.15" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="407.38" y="788" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="427.38" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="447.57" y="788" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="467.57" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="487.69" y="788" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="507.69" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="527.75" y="788" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="547.75" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="568.18" y="788" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="588.18" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="608.33" y="788" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="628.33" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="649.02" y="788" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="669.02" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="689.55" y="788" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="709.55" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="730.3" y="788" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="750.3" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="770.65" y="788" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="790.65" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="810.9" y="788" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="830.9" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="851.77" y="788" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="871.77" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="892.41" y="788" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="912.41" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="932.7" y="788" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="952.7" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="972.92" y="788" width="40" height="28" fill="#e8710a" class="data"/>
+<text x="992.92" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x20</text>
+<rect x="1013.15" y="788" width="40" height="28" fill="#1f6fd1" class="data"/>
+<text x="1033.15" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x10</text>
+<rect x="1053.54" y="788" width="40" height="28" fill="#9334e6" class="data"/>
+<text x="1073.54" y="806.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="bold">0x30</text>
+<rect x="1093.87" y="788" width="26.13" height="28" fill="#e8710a" class="data"/>
+<text x="1132" y="799" font-size="11" fill="#202124" text-anchor="start">utilisation</text>
+<text x="1132" y="813" font-size="11" fill="#202124" text-anchor="start" font-weight="bold">75.2 %</text>
+<text x="108" y="835" font-size="12" fill="#1f6fd1" text-anchor="end" font-weight="bold">A → 0x10</text>
+<rect x="120" y="825" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="825" width="4.13" height="12" fill="#1f6fd1" class="data"/>
+<rect x="124.13" y="825" width="1.33" height="12" fill="url(#hold)" class="data"/>
+<rect x="125.46" y="825" width="39.28" height="12" fill="#d2e3fc" class="data"/>
+<rect x="164.75" y="825" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="204.75" y="825" width="2.78" height="12" fill="url(#hold)" class="data"/>
+<rect x="207.53" y="825" width="78.71" height="12" fill="#d2e3fc" class="data"/>
+<rect x="286.23" y="825" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="326.23" y="825" width="1.57" height="12" fill="url(#hold)" class="data"/>
+<rect x="327.81" y="825" width="39.34" height="12" fill="#d2e3fc" class="data"/>
+<rect x="367.15" y="825" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="407.15" y="825" width="1.89" height="12" fill="url(#hold)" class="data"/>
+<rect x="409.04" y="825" width="38.53" height="12" fill="#d2e3fc" class="data"/>
+<rect x="447.57" y="825" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="487.57" y="825" width="1.96" height="12" fill="url(#hold)" class="data"/>
+<rect x="489.54" y="825" width="38.22" height="12" fill="#d2e3fc" class="data"/>
+<rect x="527.75" y="825" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="567.75" y="825" width="1.65" height="12" fill="url(#hold)" class="data"/>
+<rect x="569.4" y="825" width="79.62" height="12" fill="#d2e3fc" class="data"/>
+<rect x="649.02" y="825" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="689.02" y="825" width="2.07" height="12" fill="url(#hold)" class="data"/>
+<rect x="691.09" y="825" width="39.2" height="12" fill="#d2e3fc" class="data"/>
+<rect x="730.3" y="825" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="770.3" y="825" width="2.59" height="12" fill="url(#hold)" class="data"/>
+<rect x="772.89" y="825" width="240.25" height="12" fill="#d2e3fc" class="data"/>
+<rect x="1013.15" y="825" width="40" height="12" fill="#1f6fd1" class="data"/>
+<rect x="1053.15" y="825" width="1.44" height="12" fill="url(#hold)" class="data"/>
+<rect x="1054.58" y="825" width="65.42" height="12" fill="#d2e3fc" class="data"/>
+<line x1="131.66" y1="820" x2="131.66" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="179.01" y1="820" x2="179.01" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="206.62" y1="820" x2="206.62" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="230.82" y1="820" x2="230.82" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="290.19" y1="820" x2="290.19" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="391.19" y1="820" x2="391.19" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="430.86" y1="820" x2="430.86" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="622.18" y1="820" x2="622.18" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="849.96" y1="820" x2="849.96" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="912.51" y1="820" x2="912.51" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<line x1="952.81" y1="820" x2="952.81" y2="825" stroke="#1f6fd1" stroke-width="1.5" class="data"/>
+<text x="1132" y="835" font-size="12" fill="#202124" text-anchor="start">8 turns</text>
+<text x="108" y="853" font-size="12" fill="#e8710a" text-anchor="end" font-weight="bold">B → 0x20</text>
+<rect x="120" y="843" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="843" width="4.26" height="12" fill="#fde3cc" class="data"/>
+<rect x="124.26" y="843" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="164.26" y="843" width="1.71" height="12" fill="url(#hold)" class="data"/>
+<rect x="165.96" y="843" width="79.56" height="12" fill="#fde3cc" class="data"/>
+<rect x="245.53" y="843" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="285.53" y="843" width="1.38" height="12" fill="url(#hold)" class="data"/>
+<rect x="286.91" y="843" width="281.27" height="12" fill="#fde3cc" class="data"/>
+<rect x="568.18" y="843" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="608.18" y="843" width="1.53" height="12" fill="url(#hold)" class="data"/>
+<rect x="609.71" y="843" width="201.19" height="12" fill="#fde3cc" class="data"/>
+<rect x="810.9" y="843" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="850.9" y="843" width="1.36" height="12" fill="url(#hold)" class="data"/>
+<rect x="852.26" y="843" width="40.15" height="12" fill="#fde3cc" class="data"/>
+<rect x="892.41" y="843" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="932.41" y="843" width="2.44" height="12" fill="url(#hold)" class="data"/>
+<rect x="934.86" y="843" width="38.07" height="12" fill="#fde3cc" class="data"/>
+<rect x="972.92" y="843" width="40" height="12" fill="#e8710a" class="data"/>
+<rect x="1012.92" y="843" width="2.33" height="12" fill="url(#hold)" class="data"/>
+<rect x="1015.26" y="843" width="78.61" height="12" fill="#fde3cc" class="data"/>
+<rect x="1093.87" y="843" width="26.13" height="12" fill="#e8710a" class="data"/>
+<line x1="140.05" y1="838" x2="140.05" y2="843" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="141.12" y1="838" x2="141.12" y2="843" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="167.32" y1="838" x2="167.32" y2="843" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="245.45" y1="838" x2="245.45" y2="843" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="323.89" y1="838" x2="323.89" y2="843" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="371.29" y1="838" x2="371.29" y2="843" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="566.33" y1="838" x2="566.33" y2="843" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="724.78" y1="838" x2="724.78" y2="843" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="908.15" y1="838" x2="908.15" y2="843" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<line x1="1031.74" y1="838" x2="1031.74" y2="843" stroke="#e8710a" stroke-width="1.5" class="data"/>
+<text x="1132" y="853" font-size="12" fill="#202124" text-anchor="start">7 turns</text>
+<text x="108" y="871" font-size="12" fill="#9334e6" text-anchor="end" font-weight="bold">C → 0x30</text>
+<rect x="120" y="861" width="1000" height="12" fill="#f8f9fa"/>
+<rect x="120" y="861" width="85.16" height="12" fill="#ead9fb" class="data"/>
+<rect x="205.16" y="861" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="245.16" y="861" width="2.66" height="12" fill="url(#hold)" class="data"/>
+<rect x="247.82" y="861" width="78.79" height="12" fill="#ead9fb" class="data"/>
+<rect x="326.61" y="861" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="366.61" y="861" width="2.45" height="12" fill="url(#hold)" class="data"/>
+<rect x="369.06" y="861" width="38.32" height="12" fill="#ead9fb" class="data"/>
+<rect x="407.38" y="861" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="447.38" y="861" width="2.18" height="12" fill="url(#hold)" class="data"/>
+<rect x="449.56" y="861" width="38.13" height="12" fill="#ead9fb" class="data"/>
+<rect x="487.69" y="861" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="527.69" y="861" width="1.9" height="12" fill="url(#hold)" class="data"/>
+<rect x="529.59" y="861" width="78.74" height="12" fill="#ead9fb" class="data"/>
+<rect x="608.33" y="861" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="648.33" y="861" width="2.89" height="12" fill="url(#hold)" class="data"/>
+<rect x="651.21" y="861" width="38.34" height="12" fill="#ead9fb" class="data"/>
+<rect x="689.55" y="861" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="729.55" y="861" width="1.22" height="12" fill="url(#hold)" class="data"/>
+<rect x="730.77" y="861" width="39.88" height="12" fill="#ead9fb" class="data"/>
+<rect x="770.65" y="861" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="810.65" y="861" width="2.3" height="12" fill="url(#hold)" class="data"/>
+<rect x="812.95" y="861" width="38.82" height="12" fill="#ead9fb" class="data"/>
+<rect x="851.77" y="861" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="891.77" y="861" width="2.4" height="12" fill="url(#hold)" class="data"/>
+<rect x="894.17" y="861" width="38.53" height="12" fill="#ead9fb" class="data"/>
+<rect x="932.7" y="861" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="972.7" y="861" width="2.3" height="12" fill="url(#hold)" class="data"/>
+<rect x="975" y="861" width="78.53" height="12" fill="#ead9fb" class="data"/>
+<rect x="1053.54" y="861" width="40" height="12" fill="#9334e6" class="data"/>
+<rect x="1093.54" y="861" width="1.36" height="12" fill="url(#hold)" class="data"/>
+<rect x="1094.9" y="861" width="25.1" height="12" fill="#ead9fb" class="data"/>
+<line x1="153.94" y1="856" x2="153.94" y2="861" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="540.19" y1="856" x2="540.19" y2="861" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="737.82" y1="856" x2="737.82" y2="861" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<line x1="1078.54" y1="856" x2="1078.54" y2="861" stroke="#9334e6" stroke-width="1.5" class="data"/>
+<text x="1132" y="871" font-size="12" fill="#202124" text-anchor="start">10 turns</text>
+<line x1="120" y1="889" x2="1120" y2="889" stroke="#202124" stroke-width="1"/>
+<line x1="120" y1="889" x2="120" y2="896" stroke="#202124" stroke-width="1"/>
+<text x="120" y="908" font-size="12" fill="#202124" text-anchor="middle" font-weight="bold">35320</text>
+<line x1="220" y1="889" x2="220" y2="893" stroke="#202124" stroke-width="1"/>
+<text x="220" y="908" font-size="12" fill="#202124" text-anchor="middle">35325</text>
+<line x1="320" y1="889" x2="320" y2="893" stroke="#202124" stroke-width="1"/>
+<text x="320" y="908" font-size="12" fill="#202124" text-anchor="middle">35330</text>
+<line x1="420" y1="889" x2="420" y2="893" stroke="#202124" stroke-width="1"/>
+<text x="420" y="908" font-size="12" fill="#202124" text-anchor="middle">35335</text>
+<line x1="520" y1="889" x2="520" y2="896" stroke="#202124" stroke-width="1"/>
+<text x="520" y="908" font-size="12" fill="#202124" text-anchor="middle" font-weight="bold">35340</text>
+<line x1="620" y1="889" x2="620" y2="893" stroke="#202124" stroke-width="1"/>
+<text x="620" y="908" font-size="12" fill="#202124" text-anchor="middle">35345</text>
+<line x1="720" y1="889" x2="720" y2="893" stroke="#202124" stroke-width="1"/>
+<text x="720" y="908" font-size="12" fill="#202124" text-anchor="middle">35350</text>
+<line x1="820" y1="889" x2="820" y2="893" stroke="#202124" stroke-width="1"/>
+<text x="820" y="908" font-size="12" fill="#202124" text-anchor="middle">35355</text>
+<line x1="920" y1="889" x2="920" y2="896" stroke="#202124" stroke-width="1"/>
+<text x="920" y="908" font-size="12" fill="#202124" text-anchor="middle" font-weight="bold">35360</text>
+<line x1="1020" y1="889" x2="1020" y2="893" stroke="#202124" stroke-width="1"/>
+<text x="1020" y="908" font-size="12" fill="#202124" text-anchor="middle">35365</text>
+<line x1="1120" y1="889" x2="1120" y2="893" stroke="#202124" stroke-width="1"/>
+<text x="1120" y="908" font-size="12" fill="#202124" text-anchor="middle">35370</text>
+<text x="446.46" y="929" font-size="12" fill="#202124" text-anchor="start">time [ms]; darker gridlines every T<tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6"> = 20 ms</tspan></text>
+<text x="16" y="957" font-size="11.5" fill="#5f6368" text-anchor="start">Each controller receives packets of length m = 0.1 T<tspan dy="3.45" font-size="8.28">max</tspan><tspan dy="-3.45"> = 2 ms as an independent Poisson stream with 25 % offered load (75 % in total) and sends them in FIFO order.</tspan></text>
+<text x="16" y="974" font-size="11.5" fill="#5f6368" text-anchor="start">Ticks above a lane mark arrivals; access delay = START of the winning transfer − packet arrival.</text>
+<text x="16" y="994" font-size="11.5" fill="#5f6368" text-anchor="start">At this scale 1 px = 50 µs: t<tspan dy="3.45" font-size="8.28">buf</tspan><tspan dy="-3.45"> = 0.78 µs, t</tspan><tspan dy="3.45" font-size="8.28">idle</tspan><tspan dy="-3.45"> = 10 µs, r = 60 µs, margin = 10 µs and W = 100 µs are far too small to draw, so adjacent bars that seem to touch are</tspan></text>
+<text x="16" y="1011" font-size="11.5" fill="#5f6368" text-anchor="start">in fact separated by such gaps.</text>
+<text x="16" y="1031" font-size="11.5" fill="#5f6368" text-anchor="start">Policy 1: the bus is free often enough that every controller is served, but the higher the address, the longer the wait: worst access delay C 80.0 ms, mean A 2.03, B</text>
+<text x="16" y="1048" font-size="11.5" fill="#5f6368" text-anchor="start">2.40, C 5.39 ms (50 s run).</text>
+<text x="16" y="1068" font-size="11.5" fill="#5f6368" text-anchor="start">Policy 2 lets a controller send at most one packet per m + T<tspan dy="3.45" font-size="8.28">max</tspan><tspan dy="-3.45"> + margin = 22.01 ms, i.e. 9.1 % of bus time &lt; 25 % offered: the queues grow without bound (3985,</tspan></text>
+<text x="16" y="1085" font-size="11.5" fill="#5f6368" text-anchor="start">4031, 3961 packets waiting after 50 s) while the bus is idle 72.7 % of the time.</text>
+<text x="16" y="1105" font-size="11.5" fill="#5f6368" text-anchor="start">Policy 3: worst access delay 46.6 ms, mean A 2.85, B 3.04, C 3.95 ms; utilisation 75.2 % ≈ offered load (50 s run). The delay counts from arrival: after a burst,</text>
+<text x="16" y="1122" font-size="11.5" fill="#5f6368" text-anchor="start">C's worst packet had 8 of C's own packets waiting ahead of it. From the head of its own queue a controller waits at most (N − 1 + k)·m plus gaps, with k = number</text>
+<text x="16" y="1139" font-size="11.5" fill="#5f6368" text-anchor="start">of lower target addresses: if its next packet arrives while it defers, every other controller may send once before the idle window and the lower addresses once more</text>
+<text x="16" y="1156" font-size="11.5" fill="#5f6368" text-anchor="start">after it. Here: A 4.01 ms ≤ 2 m, B 6.01 ms ≤ 3 m, C 8.02 ms ≤ 4 m. The round of (N − 1)·m holds only for saturated controllers.</text>
+<text x="16" y="1176" font-size="11.5" fill="#5f6368" text-anchor="start">Policy 4: worst access delay 47.7 ms, mean A 3.50, B 3.25, C 3.74 ms: the address no longer decides who waits (policy 1: C 5.39 ms). The bus stays idle after every</text>
+<text x="16" y="1193" font-size="11.5" fill="#5f6368" text-anchor="start">STOP until the first probe, so the mean over all packets rises to 3.50 ms (policies 1 and 3: 3.27 and 3.28 ms). The wait from the head of the own queue has no bound,</text>
+<text x="16" y="1210" font-size="11.5" fill="#5f6368" text-anchor="start">only a probability: here A 15.8, B 18.1, C 24.3 ms (policy 3: ≤ (N − 1 + k)·m). Each controller probes about 3 500 times per second.</text>
+<text x="16" y="1230" font-size="11.5" fill="#5f6368" text-anchor="start">Window: policies 1 and 3 give every transfer to the same controller until t = 195 ms (they only shift STARTs by microseconds) and to different controllers in 14.1 %</text>
+<text x="16" y="1247" font-size="11.5" fill="#5f6368" text-anchor="start">of all transfers of the run. Shown is the stretch in which policy 1 delays C longest: as long as A and B both have packets queued they alternate and C waits, while</text>
+<text x="16" y="1264" font-size="11.5" fill="#5f6368" text-anchor="start">policy 3 serves A, B and C in turn. Both serve the whole offered load, so their utilisation is the same; they only change who sends when.</text>
+</svg>

@@ -1,0 +1,39 @@
+peers:
+  - name: stm1
+    kind: dut
+    dialect: session_v1
+    backend: tcp_line
+    i2c_addr7: 0x65
+    tcp:
+      host: localhost
+      port: 19021
+    bringup:
+      host_ip: wsl-host
+      jlink_remote_port: 19020
+      gdb_port: 2331
+      device: STM32U375RG
+      elf: ../../../stm32u375_bridge/build/Debug/stm32u375_bridge.elf
+
+  - name: stm2
+    kind: dut
+    dialect: session_v1
+    backend: tcp_line
+    i2c_addr7: 0x66
+    tcp:
+      host: localhost
+      port: 19122
+    bringup:
+      host_ip: wsl-host
+      jlink_remote_port: 19025
+      gdb_port: 50000
+      device: STM32U375RG
+      elf: ../../../stm32u375_bridge/build/Debug/stm32u375_bridge_0x66.elf
+
+  - name: tester
+    kind: tester
+    dialect: tester_v0
+    backend: tcp_line
+    i2c_addr7: 0x55
+    tcp:
+      host: wsl-host
+      port: 7000

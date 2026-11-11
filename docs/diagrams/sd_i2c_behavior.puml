@@ -1,0 +1,161 @@
+@startuml
+title I2C bus - transaction layer behaviour (docs/transaction_layer.md)
+!pragma teoz true
+skinparam sequenceMessageAlign direction
+
+participant "Bus participant A" as A
+participant "I2C bus (SDA + SCL)" as BUS
+participant "Bus participant B" as B
+
+note over A,B
+Target role stays enabled, including during controller operation.
+The controller's flush budget F limits how long it keeps trying: queue head,
+bus waits, backoff and retries. F never cuts an attempt on the bus: a controller
+that has sent START ends its transaction with STOP. Only the hold limits
+(controller B_hold, target S_max) bound an attempt.
+ACK/NAK follows each complete byte, including during arbitration;
+individual ACK/NAK clocks are omitted below.
+end note
+
+== Arbitration lost (ARLO) ==
+A -> BUS: START
+& B -> BUS: Concurrent START
+note over A,B: Matching bits do not indicate that arbitration has been won.
+loop Each transmitted bit until B loses arbitration
+ A -> BUS: Drive 0 / release for 1; sample SDA
+ & B -> BUS: Drive 0 / release for 1; sample SDA
+ opt B transmits 1 but samples 0
+  B -> B: ARLO; cease controller driving; no STOP
+ end
+end
+B -> B: Clear ARLO; request START for retry immediately
+note over BUS,B: Peripheral waits until bus available.
+alt B's flush timer not expired when bus becomes available
+ A <--> BUS: Transfer remaining bits
+ A -> BUS: STOP
+ B -> BUS: Pending START
+ B <--> BUS: Transfer bits; arbitration remains possible
+ B -> BUS: STOP
+ note over B: Once B has sent START, F no longer ends the attempt.
+else B's flush timer expires while waiting
+ A <--> BUS: Transfer bits
+ & B -> B: Withdraw pending START; report Timeout (last: ArbitrationLost)
+ note over A,B: A's ongoing transfer is unaffected.
+end
+
+== Bus busy ==
+A -> BUS: START
+B -> B: Request START
+note over BUS,B: Peripheral waits until bus available.
+alt B's flush timer not expired when bus becomes available
+ A <--> BUS: Transfer remaining bits
+ A -> BUS: STOP
+ B -> BUS: Pending START
+ B <--> BUS: Transfer bits; arbitration remains possible
+ B -> BUS: STOP
+ note over B: Once B has sent START, F no longer ends the attempt.
+else B's flush timer expires while waiting
+ A <--> BUS: Transfer bits
+ & B -> B: Withdraw pending START; report Timeout (last: Busy)
+ note over A,B: A's ongoing transfer is unaffected.
+end
+
+== Address NAK ==
+A -> BUS: START; target address + direction
+BUS -> A: Address NAK
+A -> BUS: STOP
+note over A,B
+Possible causes: boot/reset, target not listening at this address,
+or target temporarily unavailable (e.g. busy with a long internal operation).
+Address NAK alone does not identify the cause.
+Retrying alternate addresses is an open extension (transaction_layer.md 4.2).
+end note
+loop Retry the same address until address ACK or flush timer expires
+ A -> A: Wait backoff t_backoff
+ alt Flush timer expired
+  A -> A: Discard transfer; report Timeout (last: AddrNak)
+ else Flush timer not expired
+  A -> A: Request START
+  alt Flush timer expires while waiting for the bus
+   A -> A: Withdraw pending START; report Timeout (last: AddrNak)
+  else START sent
+   A -> BUS: START; same target address + direction
+   BUS -> A: Address ACK / NAK
+   opt Address NAK
+    A -> BUS: STOP
+   end
+  end
+ end
+end
+opt Address ACK received
+ note over A: From here on F has no effect on the attempt.
+ alt Transfer completes
+  A <--> BUS: Transfer remaining bits
+  A -> BUS: STOP
+  A -> A: Report Success
+ else Transfer error
+  A -> A: Terminate transfer; report the error
+ else Hold limit B_hold runs out
+  A <--> BUS: Transfer bits until the next byte boundary
+  A -> BUS: Forced STOP (read: NACK the next byte first)
+  A -> A: Report Timeout
+ end
+end
+
+== Data NAK ==
+A -> BUS: START; target address + write direction
+BUS -> A: Address ACK
+A -> BUS: Data byte(s)
+BUS -> A: Data NAK
+A -> BUS: STOP
+A -> A: Report DataNak (final)
+note over A,B
+The target has already received the acknowledged bytes and may have acted on
+them. The controller does not resend automatically; the caller decides.
+end note
+
+== Clock stretching ==
+note over A,B: A acts as controller; B is the addressed target.
+B -> BUS: Hold SCL low
+A -> BUS: Release SCL for next high phase
+BUS -> A: SCL stays low; peripheral waits
+note over A
+A cannot generate STOP while B holds SCL low.
+A keeps the transaction and waits; its flush timer F does not end it.
+end note
+note over B
+B's stretch limit S_max counts only the time B holds SCL itself,
+not the time SCL is low: A may hold SCL low at the same time.
+It is independent of B's own controller flush timer.
+end note
+alt B ready within S_max
+ B -> BUS: Release SCL
+ BUS -> A: SCL rises; peripheral resumes transfer
+else B not ready within S_max
+ B -> BUS: Release SCL and SDA
+ B -> B: Abandon target transfer; ignore bus until STOP or START
+ BUS -> A: SCL rises; peripheral resumes transfer
+ alt Write
+  BUS -> A: Data NAK
+  A -> BUS: STOP
+  A -> A: Report DataNak
+ else Read
+  BUS -> A: 0xFF for the remaining bytes
+  A -> BUS: NACK last byte; STOP
+  A -> A: Report Success (data invalid; detectable only by a payload check)
+ end
+else SCL low for t_stuck (B does not release, e.g. hung firmware)
+ A -> A: Report bus failure
+ note over A,B
+ Recovery or failure mode per transaction_layer.md section 7.
+ A still owes the STOP: as soon as SCL is released again
+ (e.g. after B was reset), A sends STOP before any other access.
+ end note
+end
+
+== Switching targets ==
+hnote across
+Layer policy: STOP between different targets, then a new START.
+No repeated START when switching targets.
+end hnote
+@enduml
