@@ -153,6 +153,68 @@ else SCL low for t_stuck (B does not release, e.g. hung firmware)
  end note
 end
 
+== Reset and initial state ==
+note over A,B
+A participant that comes out of reset (power-up, watchdog, debugger) starts in an
+initial state that need not match the bus: its peripheral did not see the last START
+and reports a free bus even while a transfer runs. A controller reset during its own
+transaction leaves that transaction without STOP.
+After any reset a participant discards partial transfers, does not continue old open
+transactions and waits for T_max before its first access (transaction_layer.md 7.2).
+No transaction holds the bus longer than T_max, START to STOP, forced STOP included.
+After the wait the peripheral's busy flag is therefore right: a transfer that was running
+has ended with STOP, and one that started since began with a START the peripheral saw.
+Busy flag clear but SDA or SCL low means the bus is stuck.
+Failure mode: the participant no longer answers on the bus, even if addressed, until restart.
+end note
+group B resets during A's transfer
+ A -> BUS: START; target address + direction
+ A <--> BUS: Transfer bits
+ B -> B: Reset; SCL and SDA released
+ note over B: B's peripheral missed A's START and reports a free bus.
+ A <--> BUS: Transfer remaining bits
+ & B -> B: Initial state; wait for T_max
+ A -> BUS: STOP
+ ... T_max after B's reset ...
+ B -> BUS: First access: START
+ note over A,B: Without the wait, B's START could break into A's transfer.
+end
+
+group A resets during its own transaction
+ A -> BUS: START; target address + direction
+ A <--> BUS: Transfer bits
+ A -> A: Reset; SCL and SDA released, no STOP
+ A -> A: Initial state; wait for T_max
+ alt B does not drive SDA: missing STOP
+  note over BUS,B: Lines high, but B's peripheral saw START without STOP: bus busy.
+  B -> B: Bus busy, SCL and SDA high: idle timer runs
+  alt A has a transfer to send
+   A -> BUS: First access: START
+   note over A,B
+   For B a repeated START (Sr): B listens for the address as usual.
+   It comes before B's idle timer reaches t_stuck (reset time + T_max < t_stuck).
+   end note
+   A <--> BUS: Transfer bits
+   A -> BUS: STOP
+   note over A,B: All participants see a free bus again.
+  else A has nothing to send
+   B -> B: Bus busy with SCL and SDA high for t_stuck: detect missing STOP
+   B -> B: Report bus failure; failure mode until restart
+  end
+ else B drives SDA low: SDA stuck
+  note over BUS,B
+  A was reset mid-byte while B sent a 0 (read data bit, or ACK of a written byte).
+  B keeps SDA low and waits for SCL clocks that never come.
+  end note
+  A -> A: Busy flag clear, but SDA low: bus stuck
+  A -> A: Report bus failure; failure mode until restart
+  note over A,B
+  Without this check, A's armed START cannot be sent while SDA is low:
+  F ends the transfer with Timeout (last: Busy).
+  end note
+ end
+end
+
 == Switching targets ==
 hnote across
 Layer policy: STOP between different targets, then a new START.
