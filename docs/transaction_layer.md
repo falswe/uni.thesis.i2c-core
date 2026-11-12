@@ -20,17 +20,18 @@ The key words MUST, SHOULD and MAY are used as in RFC 2119.
 
 | Name | Meaning | Default | Status |
 | --- | --- | --- | --- |
-| `T_max` | Longest legal transfer including clock stretching: 1024 B × 9 bit / 800 kbit/s + 2.7 ms = 14.22 ms, rounded up | 20 ms | measured basis |
+| `T_max` | Longest time any transaction holds the bus, START to STOP, forced STOP included (section 6, rule 1). Basis: longest legal transfer 1024 B × 9 bit / 800 kbit/s + 2.7 ms = 14.22 ms, rounded up; computed at the slowest bus speed in use | 20 ms | measured basis |
 | `F` | Flush time: how long the layer keeps trying to start a transfer (queue head, bus wait, backoff, retries). It never cuts an attempt that is on the bus (section 4.3) | 1000 ms | **Open** |
 | `t_backoff` | Wait after `AddrNak` before the next attempt | `F / 10` | **Open** |
-| `B_hold` | Longest continuous bus ownership of a controller, START to STOP | `T_max` | **Open** |
+| `B_hold` | Time after its first START at which a controller ends its transaction with a forced STOP (section 6, rule 1). At most `T_max − S_max` − one byte, at least the longest legal transfer | 14.9 ms | **Open** |
 | `S_max` | Longest clock stretch a target may apply (section 6) | 5 ms | **Open** |
-| `t_stuck` | SCL or SDA held low this long means the bus is stuck | 25 ms | **Open** |
+| `t_stuck` | No progress on the bus for this long means the bus is stuck: SCL low, SDA low while SCL high, or bus busy while SCL and SDA are high (section 7.1) | 100 ms | **Open**: depends on `t_reset` |
+| `t_reset` | Longest time from a participant's reset to the activation of its I2C peripheral | – | to be measured |
 | `t_idle` | Idle window of the idle-window access policy (section 5) | 10 µs | **Open** |
 | `t_buf` | Bus-free time before waiting controllers start (observed) | 0.78 µs | measured |
 | `r` | Re-arm time of a controller after its own STOP (STM bridge) | 60 µs | measured |
 
-The defaults must satisfy `S_max < B_hold ≤ T_max < t_stuck` and `t_backoff < F`.
+The values must satisfy `B_hold + S_max` + one byte ≤ `T_max`, `t_reset + T_max < t_stuck` and `t_backoff < F`.
 
 ## 3. Outcomes
 
@@ -77,7 +78,7 @@ The tokens are the canonical status tokens of [protocol.md](protocol.md).
 - **Owning the bus** (from its START to its STOP): the controller MUST complete the attempt and end it with a STOP. `F` running out has no effect on the attempt. If the attempt outcome is final, it is the final outcome; otherwise the final outcome is `Timeout`. The duration of the attempt is bounded by the hold limits of section 6, not by `F`.
 - The controller MUST NOT resubmit the transfer by itself. Resubmission is the caller's decision.
 
-Measured from the queue head, the final outcome is therefore reported within `F + B_hold + S_max` plus one byte time.
+Measured from the queue head, the final outcome is therefore reported within `F + T_max` on a working bus, because every transaction ends within `T_max` of its START (section 6, rule 1). A platform that cannot withdraw an armed START may need `F + 2 T_max`: the START can still fire after the transaction in progress ends. A stuck bus is reported as a bus failure `t_stuck` after it stopped making progress (section 6, rule 3).
 
 **Why the owner must not leave the bus.** After a START, every participant considers the bus busy until it sees a STOP (UM10204 §3.1.4); the armed STARTs of waiting controllers fire only after that STOP. Only the controller that owns the transaction can generate the STOP, and only while it drives SCL. A controller that stops in the middle, for example by disabling its peripheral, leaves the bus busy for everyone else ("missing STOP", section 7), and a target in the middle of a byte may keep SDA low. Giving up on the bus would turn a slow target into a bus failure.
 
@@ -122,7 +123,7 @@ SCL is a wired-AND line. Every participant sees only that SCL is low, not who ho
    - Read: NACK the next received byte, then STOP, so that the target releases SDA.
    - Transaction held open between segments (`np`): STOP.
 
-   The controller can always do this while it drives SCL. A clock stretch by the target can delay the next byte boundary by at most `S_max`. Platform support: [C5](platform_capabilities.md#c5-forced-stop-at-a-byte-boundary).
+   The controller can always do this while it drives SCL. A clock stretch by the target can delay the next byte boundary by at most `S_max`, so with `B_hold` from section 2 every transaction ends within `T_max` of its first START; section 7.2 relies on this. Platform support: [C5](platform_capabilities.md#c5-forced-stop-at-a-byte-boundary).
 
    A controller also holds SCL low itself between bytes while it waits for its own firmware or DMA. That hold is part of its turn and therefore bounded by `B_hold`; because `B_hold` < `t_stuck`, it is never taken for a stuck bus. Devices that reset after SCL has been low for 25–35 ms, whoever holds it (SMBus `tTIMEOUT`), additionally need `B_hold` < 25 ms. Platform support: [C6](platform_capabilities.md#c6-limit-on-the-controllers-own-clock-hold).
 
@@ -144,25 +145,28 @@ SCL is a wired-AND line. Every participant sees only that SCL is low, not who ho
 
 | Failure | Typical cause | Detection |
 | --- | --- | --- |
-| SDA stuck low | A target lost bit synchronisation (e.g. controller reset mid-byte) and keeps driving a 0 | SDA low while SCL high for `t_stuck` |
+| SDA stuck low | A target lost bit synchronisation (e.g. controller reset mid-byte) and keeps driving a 0 | SDA low while SCL high for `t_stuck`; after a reset also: busy flag clear while SDA is low (section 7.2) |
 | SCL stuck low | A target stretches forever (hung firmware), or a short | SCL low for `t_stuck` |
-| Missing STOP | A controller reset during its transaction; peripherals see the bus as busy | Bus busy without edges for `T_max` |
+| Missing STOP | A controller reset during its transaction; the peripherals that saw its START see the bus as busy | Bus busy while SCL and SDA are high for `t_stuck` |
 | Repeated `Timeout` | Target missing, permanently NAKing, or congested bus | `K` consecutive `Timeout` outcomes (**Open:** `K`) |
 
 A detector that only sees SCL low cannot tell who holds SCL. A participant MUST NOT end its part of a transfer because of such a detector before `t_stuck`, so that a legal controller hold is never cut (section 6). Combined with a check of the participant's own hold, the same timer can serve the stretch limit of section 6, rule 2. Platform support: [C9](platform_capabilities.md#c9-stuck-bus-detection).
 
 ### 7.2 Reaction
 
-- **Product baseline.** A detected bus failure MUST be reported as such, not as an ordinary `Timeout`. The system then enters a failure mode that the user leaves by restarting the device. **Open:** a distinct status token, e.g. `BusError`.
+- **Product baseline.** A detected bus failure MUST be reported as such, not as an ordinary `Timeout`. The participant then enters a failure mode that the user leaves by restarting the device: it releases SCL and SDA and no longer takes part in the bus, neither as controller nor as target, so it does not acknowledge its address. A controller that owes a STOP (section 6, rule 3) still sends it. The host interface stays available to report the failure. **Open:** a distinct status token, e.g. `BusError`.
 - **Automatic recovery (optional, evaluated in the thesis):**
   - **SDA stuck:** the controller clocks SCL up to nine times until SDA is released, then sends STOP (UM10204 §3.1.16).
-  - **Missing STOP:** the controller that owns the transaction sends the STOP as soon as SCL is free (section 6, rule 3). If that controller was reset, another participant sends a STOP by GPIO after the bus has been idle for `T_max`.
+  - **Missing STOP:** the controller that owns the transaction sends the STOP as soon as SCL is free (section 6, rule 3). If that controller was reset and has nothing to send, another participant sends a STOP by GPIO when it detects the missing STOP.
   - **SCL held by the own target:** reset the own peripheral.
   - **SCL held by another participant:** clocking cannot clear it. It needs an out-of-band reset by a participant that has one (e.g. a housekeeping controller with reset or power control).
 - **After any reset or recovery:**
   - Discard partial transfers.
   - Do not continue old open transactions.
-  - Wait until the bus has been idle for `T_max` before the first access. A participant that joins during a transfer cannot otherwise know that the bus is in use.
+  - Wait `T_max` after the I2C peripheral is enabled before the first access as controller. A participant that joins during a transfer cannot otherwise know that the bus is in use. Every transaction ends within `T_max` (section 6, rule 1), so the busy flag is right after the wait: a transaction that was running has ended with STOP, and one that started since began with a START the peripheral saw, so an armed START waits for its STOP (section 4.2, rule 1). The target role may be active during the wait.
+  - After the wait, the participant SHOULD read the pin levels: busy flag clear but SDA or SCL low means the bus is stuck (section 7.1). A platform that cannot read the pins relies on `F`: its START cannot be sent while SDA or SCL is low, and the transfer ends with `Timeout`, last `Busy`. Platform support: [C9](platform_capabilities.md#c9-stuck-bus-detection).
+  - A controller reset during its own transaction leaves a missing STOP. Its first START after the wait is a repeated START for the participants that saw the old one, and its STOP ends the missing STOP for them. Because `t_reset + T_max < t_stuck` (section 2), this comes before they detect a missing STOP, provided the controller has a transfer to send.
+  - **Open:** a target that was addressed by the interrupted write may combine it with the next transfer to it (write, repeated START, read; [target_model.md](target_model.md)): a plain read then starts at the written offset instead of 0.
 
 ## 8. Observability
 
@@ -184,7 +188,7 @@ The participant SHOULD keep cumulative counters per outcome and per fault class.
 
 1. `F` and when it starts (section 4.1).
 2. `t_backoff`: fixed `F / 10`, or exponential.
-3. `S_max`, `B_hold` and `t_stuck` values.
+3. `S_max` and `t_stuck` values; `t_stuck` depends on the measured `t_reset` (section 2).
 4. Whether to report the acknowledged byte count with `DataNak`, and whether to allow resending idempotent transfers.
 5. Alternate-address retry (later).
 6. Whether to adopt idle-window deferral, and the value of `t_idle`.
