@@ -208,7 +208,7 @@ MONO = "Consolas, 'DejaVu Sans Mono', monospace"
 INK, GREY, MUTED, GRID, GRID_STRONG = "#202124", "#5f6368", "#9aa0a6", "#e8eaed", "#c4c7cc"
 IDLE_FILL, LANE_FILL = "#f1f3f4", "#f8f9fa"
 ALARM, GOOD = "#c5221f", "#137333"
-SUBSCRIPT = re.compile(r"\b([Tt])_(max|buf|idle)\b")
+SUBSCRIPT = re.compile(r"\b([TtSB])_(max|buf|idle|hold|stuck|reset)\b")
 EDGE = 8  # every text and shape keeps this distance from the left and right edge
 
 
@@ -725,7 +725,7 @@ def _char_em(ch: str, mono: bool) -> float:
 
 
 def _chunks(text: str) -> list[tuple[str, bool]]:
-    """Split text into (chunk, is_subscript) for T_max, t_buf and t_idle."""
+    """Split text into (chunk, is_subscript) for the parameter names of SUBSCRIPT (T_max, t_buf, ...)."""
     parts: list[tuple[str, bool]] = []
     pos = 0
     for match in SUBSCRIPT.finditer(text):
@@ -783,7 +783,7 @@ def _f(v: float) -> str:
 
 
 def _rich(text: str, size: float) -> str:
-    """Escape text and lower T_max, t_buf and t_idle subscripts with dy (and raise back)."""
+    """Escape text and lower the subscripts of SUBSCRIPT (T_max, t_buf, ...) with dy (and raise back)."""
     shift = _f(size * SUB_SHIFT)
     out, low = [], False
     for chunk, sub in _chunks(text):

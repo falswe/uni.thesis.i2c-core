@@ -1,0 +1,352 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="820" viewBox="0 0 1240 820" font-family="Helvetica, Arial, sans-serif">
+<title>Timeout designs: how each fault ends</title>
+<defs>
+</defs>
+<rect width="1240" height="820" fill="#ffffff"/>
+<text x="16" y="28" font-size="18" fill="#202124" text-anchor="start" font-weight="bold">Timeout designs: how each fault ends</text>
+<text x="16" y="46" font-size="12" fill="#3c4043" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace">A's last result and the effect on the bus, per fault scenario (rows) and design (columns).</text>
+<text x="16" y="64" font-size="12" fill="#3c4043" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace">F = 1 s · S<tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6"> = 5 ms · B</tspan><tspan dy="3.6" font-size="8.64">hold</tspan><tspan dy="-3.6"> = 14.9 ms · T</tspan><tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6"> = 20 ms · t</tspan><tspan dy="3.6" font-size="8.64">stuck</tspan><tspan dy="-3.6"> = 100 ms · t</tspan><tspan dy="3.6" font-size="8.64">reset</tspan><tspan dy="-3.6"> = 50 ms (assumed) · byte 11.25 µs · main loop 100 µs (assumed)</tspan></text>
+<text x="260.75" y="94" font-size="11" fill="#202124" text-anchor="middle" font-weight="bold">Layered</text>
+<text x="260.75" y="108" font-size="10.5" fill="#5f6368" text-anchor="middle">STM32U375</text>
+<text x="390.25" y="94" font-size="11" fill="#202124" text-anchor="middle" font-weight="bold">Layered</text>
+<text x="390.25" y="108" font-size="10.5" fill="#5f6368" text-anchor="middle">generic short</text>
+<text x="390.25" y="121" font-size="10.5" fill="#5f6368" text-anchor="middle">timeout</text>
+<text x="519.75" y="94" font-size="11" fill="#202124" text-anchor="middle" font-weight="bold">Single, release</text>
+<text x="519.75" y="108" font-size="10.5" fill="#5f6368" text-anchor="middle">stretch limit</text>
+<text x="519.75" y="121" font-size="10.5" fill="#5f6368" text-anchor="middle">5 ms</text>
+<text x="649.25" y="94" font-size="11" fill="#202124" text-anchor="middle" font-weight="bold">Single, release</text>
+<text x="649.25" y="108" font-size="10.5" fill="#5f6368" text-anchor="middle">stretch limit</text>
+<text x="649.25" y="121" font-size="10.5" fill="#5f6368" text-anchor="middle">50 ms</text>
+<text x="778.75" y="94" font-size="11" fill="#202124" text-anchor="middle" font-weight="bold">Single, release</text>
+<text x="778.75" y="108" font-size="10.5" fill="#5f6368" text-anchor="middle">stretch limit F</text>
+<text x="908.25" y="94" font-size="11" fill="#202124" text-anchor="middle" font-weight="bold">Single, stop</text>
+<text x="908.25" y="108" font-size="10.5" fill="#5f6368" text-anchor="middle">stretch limit</text>
+<text x="908.25" y="121" font-size="10.5" fill="#5f6368" text-anchor="middle">5 ms</text>
+<text x="1037.75" y="94" font-size="11" fill="#202124" text-anchor="middle" font-weight="bold">Single, stop</text>
+<text x="1037.75" y="108" font-size="10.5" fill="#5f6368" text-anchor="middle">stretch limit</text>
+<text x="1037.75" y="121" font-size="10.5" fill="#5f6368" text-anchor="middle">50 ms</text>
+<text x="1167.25" y="94" font-size="11" fill="#202124" text-anchor="middle" font-weight="bold">Single, stop</text>
+<text x="1167.25" y="108" font-size="10.5" fill="#5f6368" text-anchor="middle">stretch limit F</text>
+<text x="16" y="153" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">Slow target</text>
+<rect x="198" y="135" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="260.75" y="152" font-size="10.5" fill="#202124" text-anchor="middle">A: DataNak</text>
+<text x="260.75" y="165" font-size="10.5" fill="#202124" text-anchor="middle">6.06 ms</text>
+<text x="260.75" y="178" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="327.5" y="135" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="390.25" y="152" font-size="10.5" fill="#202124" text-anchor="middle">A: DataNak</text>
+<text x="390.25" y="165" font-size="10.5" fill="#202124" text-anchor="middle">6.06 ms</text>
+<text x="390.25" y="178" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="457" y="135" width="125.5" height="62" fill="#fde7e9"/>
+<text x="519.75" y="152" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="519.75" y="165" font-size="10.5" fill="#202124" text-anchor="middle">6.19 ms</text>
+<text x="519.75" y="178" font-size="10.5" fill="#202124" text-anchor="middle">ACK while not</text>
+<text x="519.75" y="191" font-size="10.5" fill="#202124" text-anchor="middle">ready</text>
+<rect x="586.5" y="135" width="125.5" height="62" fill="#fef7e0"/>
+<text x="649.25" y="152" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="649.25" y="165" font-size="10.5" fill="#202124" text-anchor="middle">41.2 ms</text>
+<text x="649.25" y="178" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="649.25" y="191" font-size="10.5" fill="#202124" text-anchor="middle">40.2 ms</text>
+<rect x="716" y="135" width="125.5" height="62" fill="#fef7e0"/>
+<text x="778.75" y="152" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="778.75" y="165" font-size="10.5" fill="#202124" text-anchor="middle">41.2 ms</text>
+<text x="778.75" y="178" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="778.75" y="191" font-size="10.5" fill="#202124" text-anchor="middle">40.2 ms</text>
+<rect x="845.5" y="135" width="125.5" height="62" fill="#fde7e9"/>
+<text x="908.25" y="152" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="908.25" y="165" font-size="10.5" fill="#202124" text-anchor="middle">6.19 ms</text>
+<text x="908.25" y="178" font-size="10.5" fill="#202124" text-anchor="middle">ACK while not</text>
+<text x="908.25" y="191" font-size="10.5" fill="#202124" text-anchor="middle">ready</text>
+<rect x="975" y="135" width="125.5" height="62" fill="#fef7e0"/>
+<text x="1037.75" y="152" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="1037.75" y="165" font-size="10.5" fill="#202124" text-anchor="middle">41.2 ms</text>
+<text x="1037.75" y="178" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="1037.75" y="191" font-size="10.5" fill="#202124" text-anchor="middle">40.2 ms</text>
+<rect x="1104.5" y="135" width="125.5" height="62" fill="#fef7e0"/>
+<text x="1167.25" y="152" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="1167.25" y="165" font-size="10.5" fill="#202124" text-anchor="middle">41.2 ms</text>
+<text x="1167.25" y="178" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="1167.25" y="191" font-size="10.5" fill="#202124" text-anchor="middle">40.2 ms</text>
+<text x="16" y="219" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">Hung target</text>
+<rect x="198" y="201" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="260.75" y="218" font-size="10.5" fill="#202124" text-anchor="middle">A: DataNak</text>
+<text x="260.75" y="231" font-size="10.5" fill="#202124" text-anchor="middle">6.06 ms</text>
+<text x="260.75" y="244" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="327.5" y="201" width="125.5" height="62" fill="#e3e7fb"/>
+<text x="390.25" y="218" font-size="10.5" fill="#202124" text-anchor="middle">A: bus failure</text>
+<text x="390.25" y="231" font-size="10.5" fill="#202124" text-anchor="middle">101 ms</text>
+<text x="390.25" y="244" font-size="10.5" fill="#202124" text-anchor="middle">failure mode A C</text>
+<text x="390.25" y="257" font-size="10.5" fill="#202124" text-anchor="middle">D from 101 ms</text>
+<rect x="457" y="201" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="519.75" y="218" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="519.75" y="231" font-size="10.5" fill="#202124" text-anchor="middle">1001 ms</text>
+<text x="519.75" y="244" font-size="10.5" fill="#202124" text-anchor="middle">SCL held low by</text>
+<text x="519.75" y="257" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<rect x="586.5" y="201" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="649.25" y="218" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="649.25" y="231" font-size="10.5" fill="#202124" text-anchor="middle">1001 ms</text>
+<text x="649.25" y="244" font-size="10.5" fill="#202124" text-anchor="middle">SCL held low by</text>
+<text x="649.25" y="257" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<rect x="716" y="201" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="778.75" y="218" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="778.75" y="231" font-size="10.5" fill="#202124" text-anchor="middle">1001 ms</text>
+<text x="778.75" y="244" font-size="10.5" fill="#202124" text-anchor="middle">SCL held low by</text>
+<text x="778.75" y="257" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<rect x="845.5" y="201" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="908.25" y="218" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="908.25" y="231" font-size="10.5" fill="#202124" text-anchor="middle">1001 ms</text>
+<text x="908.25" y="244" font-size="10.5" fill="#202124" text-anchor="middle">SCL held low by</text>
+<text x="908.25" y="257" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<rect x="975" y="201" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="1037.75" y="218" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="1037.75" y="231" font-size="10.5" fill="#202124" text-anchor="middle">1001 ms</text>
+<text x="1037.75" y="244" font-size="10.5" fill="#202124" text-anchor="middle">SCL held low by</text>
+<text x="1037.75" y="257" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<rect x="1104.5" y="201" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="1167.25" y="218" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="1167.25" y="231" font-size="10.5" fill="#202124" text-anchor="middle">1001 ms</text>
+<text x="1167.25" y="244" font-size="10.5" fill="#202124" text-anchor="middle">SCL held low by</text>
+<text x="1167.25" y="257" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<text x="16" y="285" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">Controller firmware</text>
+<text x="16" y="300" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">stall</text>
+<rect x="198" y="267" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="260.75" y="284" font-size="10.5" fill="#202124" text-anchor="middle">A: Aborted</text>
+<text x="260.75" y="297" font-size="10.5" fill="#202124" text-anchor="middle">51.1 ms</text>
+<text x="260.75" y="310" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="327.5" y="267" width="125.5" height="62" fill="#fef7e0"/>
+<text x="390.25" y="284" font-size="10.5" fill="#202124" text-anchor="middle">A: Aborted</text>
+<text x="390.25" y="297" font-size="10.5" fill="#202124" text-anchor="middle">51.1 ms</text>
+<text x="390.25" y="310" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="390.25" y="323" font-size="10.5" fill="#202124" text-anchor="middle">50.1 ms</text>
+<rect x="457" y="267" width="125.5" height="62" fill="#fef7e0"/>
+<text x="519.75" y="284" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="519.75" y="297" font-size="10.5" fill="#202124" text-anchor="middle">51.2 ms</text>
+<text x="519.75" y="310" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="519.75" y="323" font-size="10.5" fill="#202124" text-anchor="middle">50.2 ms</text>
+<rect x="586.5" y="267" width="125.5" height="62" fill="#fef7e0"/>
+<text x="649.25" y="284" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="649.25" y="297" font-size="10.5" fill="#202124" text-anchor="middle">51.2 ms</text>
+<text x="649.25" y="310" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="649.25" y="323" font-size="10.5" fill="#202124" text-anchor="middle">50.2 ms</text>
+<rect x="716" y="267" width="125.5" height="62" fill="#fef7e0"/>
+<text x="778.75" y="284" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="778.75" y="297" font-size="10.5" fill="#202124" text-anchor="middle">51.2 ms</text>
+<text x="778.75" y="310" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="778.75" y="323" font-size="10.5" fill="#202124" text-anchor="middle">50.2 ms</text>
+<rect x="845.5" y="267" width="125.5" height="62" fill="#fef7e0"/>
+<text x="908.25" y="284" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="908.25" y="297" font-size="10.5" fill="#202124" text-anchor="middle">51.2 ms</text>
+<text x="908.25" y="310" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="908.25" y="323" font-size="10.5" fill="#202124" text-anchor="middle">50.2 ms</text>
+<rect x="975" y="267" width="125.5" height="62" fill="#fef7e0"/>
+<text x="1037.75" y="284" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="1037.75" y="297" font-size="10.5" fill="#202124" text-anchor="middle">51.2 ms</text>
+<text x="1037.75" y="310" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="1037.75" y="323" font-size="10.5" fill="#202124" text-anchor="middle">50.2 ms</text>
+<rect x="1104.5" y="267" width="125.5" height="62" fill="#fef7e0"/>
+<text x="1167.25" y="284" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="1167.25" y="297" font-size="10.5" fill="#202124" text-anchor="middle">51.2 ms</text>
+<text x="1167.25" y="310" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="1167.25" y="323" font-size="10.5" fill="#202124" text-anchor="middle">50.2 ms</text>
+<text x="16" y="351" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">Controller reset,</text>
+<text x="16" y="366" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">then resend</text>
+<rect x="198" y="333" width="125.5" height="62" fill="#fef7e0"/>
+<text x="260.75" y="350" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="260.75" y="363" font-size="10.5" fill="#202124" text-anchor="middle">71.3 ms</text>
+<text x="260.75" y="376" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="260.75" y="389" font-size="10.5" fill="#202124" text-anchor="middle">70.0 ms</text>
+<rect x="327.5" y="333" width="125.5" height="62" fill="#fef7e0"/>
+<text x="390.25" y="350" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="390.25" y="363" font-size="10.5" fill="#202124" text-anchor="middle">71.3 ms</text>
+<text x="390.25" y="376" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="390.25" y="389" font-size="10.5" fill="#202124" text-anchor="middle">70.0 ms</text>
+<rect x="457" y="333" width="125.5" height="62" fill="#fef7e0"/>
+<text x="519.75" y="350" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="519.75" y="363" font-size="10.5" fill="#202124" text-anchor="middle">51.3 ms</text>
+<text x="519.75" y="376" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="519.75" y="389" font-size="10.5" fill="#202124" text-anchor="middle">50.0 ms</text>
+<rect x="586.5" y="333" width="125.5" height="62" fill="#fef7e0"/>
+<text x="649.25" y="350" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="649.25" y="363" font-size="10.5" fill="#202124" text-anchor="middle">51.3 ms</text>
+<text x="649.25" y="376" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="649.25" y="389" font-size="10.5" fill="#202124" text-anchor="middle">50.0 ms</text>
+<rect x="716" y="333" width="125.5" height="62" fill="#fef7e0"/>
+<text x="778.75" y="350" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="778.75" y="363" font-size="10.5" fill="#202124" text-anchor="middle">51.3 ms</text>
+<text x="778.75" y="376" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="778.75" y="389" font-size="10.5" fill="#202124" text-anchor="middle">50.0 ms</text>
+<rect x="845.5" y="333" width="125.5" height="62" fill="#fef7e0"/>
+<text x="908.25" y="350" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="908.25" y="363" font-size="10.5" fill="#202124" text-anchor="middle">51.3 ms</text>
+<text x="908.25" y="376" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="908.25" y="389" font-size="10.5" fill="#202124" text-anchor="middle">50.0 ms</text>
+<rect x="975" y="333" width="125.5" height="62" fill="#fef7e0"/>
+<text x="1037.75" y="350" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="1037.75" y="363" font-size="10.5" fill="#202124" text-anchor="middle">51.3 ms</text>
+<text x="1037.75" y="376" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="1037.75" y="389" font-size="10.5" fill="#202124" text-anchor="middle">50.0 ms</text>
+<rect x="1104.5" y="333" width="125.5" height="62" fill="#fef7e0"/>
+<text x="1167.25" y="350" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="1167.25" y="363" font-size="10.5" fill="#202124" text-anchor="middle">51.3 ms</text>
+<text x="1167.25" y="376" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked</text>
+<text x="1167.25" y="389" font-size="10.5" fill="#202124" text-anchor="middle">50.0 ms</text>
+<text x="16" y="417" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">Controller reset,</text>
+<text x="16" y="432" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">nothing to send</text>
+<rect x="198" y="399" width="125.5" height="62" fill="#e3e7fb"/>
+<text x="260.75" y="416" font-size="10.5" fill="#202124" text-anchor="middle">A: lost 1.07 ms</text>
+<text x="260.75" y="429" font-size="10.5" fill="#202124" text-anchor="middle">failure mode B C</text>
+<text x="260.75" y="442" font-size="10.5" fill="#202124" text-anchor="middle">D from 101 ms</text>
+<rect x="327.5" y="399" width="125.5" height="62" fill="#e3e7fb"/>
+<text x="390.25" y="416" font-size="10.5" fill="#202124" text-anchor="middle">A: lost 1.07 ms</text>
+<text x="390.25" y="429" font-size="10.5" fill="#202124" text-anchor="middle">failure mode B C</text>
+<text x="390.25" y="442" font-size="10.5" fill="#202124" text-anchor="middle">D from 101 ms</text>
+<rect x="457" y="399" width="125.5" height="62" fill="#fef7e0"/>
+<text x="519.75" y="416" font-size="10.5" fill="#202124" text-anchor="middle">A: lost 1.07 ms</text>
+<text x="519.75" y="429" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked 1.02 s</text>
+<rect x="586.5" y="399" width="125.5" height="62" fill="#fef7e0"/>
+<text x="649.25" y="416" font-size="10.5" fill="#202124" text-anchor="middle">A: lost 1.07 ms</text>
+<text x="649.25" y="429" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked 1.02 s</text>
+<rect x="716" y="399" width="125.5" height="62" fill="#fef7e0"/>
+<text x="778.75" y="416" font-size="10.5" fill="#202124" text-anchor="middle">A: lost 1.07 ms</text>
+<text x="778.75" y="429" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked 1.02 s</text>
+<rect x="845.5" y="399" width="125.5" height="62" fill="#fef7e0"/>
+<text x="908.25" y="416" font-size="10.5" fill="#202124" text-anchor="middle">A: lost 1.07 ms</text>
+<text x="908.25" y="429" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked 1.02 s</text>
+<rect x="975" y="399" width="125.5" height="62" fill="#fef7e0"/>
+<text x="1037.75" y="416" font-size="10.5" fill="#202124" text-anchor="middle">A: lost 1.07 ms</text>
+<text x="1037.75" y="429" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked 1.02 s</text>
+<rect x="1104.5" y="399" width="125.5" height="62" fill="#fef7e0"/>
+<text x="1167.25" y="416" font-size="10.5" fill="#202124" text-anchor="middle">A: lost 1.07 ms</text>
+<text x="1167.25" y="429" font-size="10.5" fill="#202124" text-anchor="middle">bus blocked 1.02 s</text>
+<text x="16" y="483" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">Controller reset</text>
+<text x="16" y="498" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">during a read</text>
+<rect x="198" y="465" width="125.5" height="62" fill="#e3e7fb"/>
+<text x="260.75" y="482" font-size="10.5" fill="#202124" text-anchor="middle">A: bus failure</text>
+<text x="260.75" y="495" font-size="10.5" fill="#202124" text-anchor="middle">71.2 ms</text>
+<text x="260.75" y="508" font-size="10.5" fill="#202124" text-anchor="middle">failure mode A B</text>
+<text x="260.75" y="521" font-size="10.5" fill="#202124" text-anchor="middle">C D from 71.1 ms</text>
+<rect x="327.5" y="465" width="125.5" height="62" fill="#e3e7fb"/>
+<text x="390.25" y="482" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="390.25" y="495" font-size="10.5" fill="#202124" text-anchor="middle">1.05 s</text>
+<text x="390.25" y="508" font-size="10.5" fill="#202124" text-anchor="middle">failure mode B C</text>
+<text x="390.25" y="521" font-size="10.5" fill="#202124" text-anchor="middle">D from 101 ms</text>
+<rect x="457" y="465" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="519.75" y="482" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="519.75" y="495" font-size="10.5" fill="#202124" text-anchor="middle">1.05 s</text>
+<text x="519.75" y="508" font-size="10.5" fill="#202124" text-anchor="middle">SDA held low by</text>
+<text x="519.75" y="521" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<rect x="586.5" y="465" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="649.25" y="482" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="649.25" y="495" font-size="10.5" fill="#202124" text-anchor="middle">1.05 s</text>
+<text x="649.25" y="508" font-size="10.5" fill="#202124" text-anchor="middle">SDA held low by</text>
+<text x="649.25" y="521" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<rect x="716" y="465" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="778.75" y="482" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="778.75" y="495" font-size="10.5" fill="#202124" text-anchor="middle">1.05 s</text>
+<text x="778.75" y="508" font-size="10.5" fill="#202124" text-anchor="middle">SDA held low by</text>
+<text x="778.75" y="521" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<rect x="845.5" y="465" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="908.25" y="482" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="908.25" y="495" font-size="10.5" fill="#202124" text-anchor="middle">1.05 s</text>
+<text x="908.25" y="508" font-size="10.5" fill="#202124" text-anchor="middle">SDA held low by</text>
+<text x="908.25" y="521" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<rect x="975" y="465" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="1037.75" y="482" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="1037.75" y="495" font-size="10.5" fill="#202124" text-anchor="middle">1.05 s</text>
+<text x="1037.75" y="508" font-size="10.5" fill="#202124" text-anchor="middle">SDA held low by</text>
+<text x="1037.75" y="521" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<rect x="1104.5" y="465" width="125.5" height="62" fill="#f6c4c0"/>
+<text x="1167.25" y="482" font-size="10.5" fill="#202124" text-anchor="middle">A: Timeout</text>
+<text x="1167.25" y="495" font-size="10.5" fill="#202124" text-anchor="middle">1.05 s</text>
+<text x="1167.25" y="508" font-size="10.5" fill="#202124" text-anchor="middle">SDA held low by</text>
+<text x="1167.25" y="521" font-size="10.5" fill="#202124" text-anchor="middle">B</text>
+<text x="16" y="549" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">Participant joins</text>
+<text x="16" y="564" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">during a transfer</text>
+<rect x="198" y="531" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="260.75" y="548" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="260.75" y="561" font-size="10.5" fill="#202124" text-anchor="middle">12.5 ms</text>
+<text x="260.75" y="574" font-size="10.5" fill="#202124" text-anchor="middle">C waits</text>
+<text x="260.75" y="587" font-size="10.5" fill="#202124" text-anchor="middle">≤ 20.1 ms</text>
+<rect x="327.5" y="531" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="390.25" y="548" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="390.25" y="561" font-size="10.5" fill="#202124" text-anchor="middle">12.5 ms</text>
+<text x="390.25" y="574" font-size="10.5" fill="#202124" text-anchor="middle">C waits</text>
+<text x="390.25" y="587" font-size="10.5" fill="#202124" text-anchor="middle">≤ 20.1 ms</text>
+<rect x="457" y="531" width="125.5" height="62" fill="#fde7e9"/>
+<text x="519.75" y="548" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="519.75" y="561" font-size="10.5" fill="#202124" text-anchor="middle">16.6 ms</text>
+<text x="519.75" y="574" font-size="10.5" fill="#202124" text-anchor="middle">START cuts A's</text>
+<text x="519.75" y="587" font-size="10.5" fill="#202124" text-anchor="middle">transfer</text>
+<rect x="586.5" y="531" width="125.5" height="62" fill="#fde7e9"/>
+<text x="649.25" y="548" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="649.25" y="561" font-size="10.5" fill="#202124" text-anchor="middle">16.6 ms</text>
+<text x="649.25" y="574" font-size="10.5" fill="#202124" text-anchor="middle">START cuts A's</text>
+<text x="649.25" y="587" font-size="10.5" fill="#202124" text-anchor="middle">transfer</text>
+<rect x="716" y="531" width="125.5" height="62" fill="#fde7e9"/>
+<text x="778.75" y="548" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="778.75" y="561" font-size="10.5" fill="#202124" text-anchor="middle">16.6 ms</text>
+<text x="778.75" y="574" font-size="10.5" fill="#202124" text-anchor="middle">START cuts A's</text>
+<text x="778.75" y="587" font-size="10.5" fill="#202124" text-anchor="middle">transfer</text>
+<rect x="845.5" y="531" width="125.5" height="62" fill="#fde7e9"/>
+<text x="908.25" y="548" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="908.25" y="561" font-size="10.5" fill="#202124" text-anchor="middle">16.6 ms</text>
+<text x="908.25" y="574" font-size="10.5" fill="#202124" text-anchor="middle">START cuts A's</text>
+<text x="908.25" y="587" font-size="10.5" fill="#202124" text-anchor="middle">transfer</text>
+<rect x="975" y="531" width="125.5" height="62" fill="#fde7e9"/>
+<text x="1037.75" y="548" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="1037.75" y="561" font-size="10.5" fill="#202124" text-anchor="middle">16.6 ms</text>
+<text x="1037.75" y="574" font-size="10.5" fill="#202124" text-anchor="middle">START cuts A's</text>
+<text x="1037.75" y="587" font-size="10.5" fill="#202124" text-anchor="middle">transfer</text>
+<rect x="1104.5" y="531" width="125.5" height="62" fill="#fde7e9"/>
+<text x="1167.25" y="548" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="1167.25" y="561" font-size="10.5" fill="#202124" text-anchor="middle">16.6 ms</text>
+<text x="1167.25" y="574" font-size="10.5" fill="#202124" text-anchor="middle">START cuts A's</text>
+<text x="1167.25" y="587" font-size="10.5" fill="#202124" text-anchor="middle">transfer</text>
+<text x="16" y="615" font-size="11.5" fill="#202124" text-anchor="start" font-weight="bold">Booting target</text>
+<rect x="198" y="597" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="260.75" y="614" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="260.75" y="627" font-size="10.5" fill="#202124" text-anchor="middle">301 ms</text>
+<text x="260.75" y="640" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="327.5" y="597" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="390.25" y="614" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="390.25" y="627" font-size="10.5" fill="#202124" text-anchor="middle">301 ms</text>
+<text x="390.25" y="640" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="457" y="597" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="519.75" y="614" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="519.75" y="627" font-size="10.5" fill="#202124" text-anchor="middle">301 ms</text>
+<text x="519.75" y="640" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="586.5" y="597" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="649.25" y="614" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="649.25" y="627" font-size="10.5" fill="#202124" text-anchor="middle">301 ms</text>
+<text x="649.25" y="640" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="716" y="597" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="778.75" y="614" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="778.75" y="627" font-size="10.5" fill="#202124" text-anchor="middle">301 ms</text>
+<text x="778.75" y="640" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="845.5" y="597" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="908.25" y="614" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="908.25" y="627" font-size="10.5" fill="#202124" text-anchor="middle">301 ms</text>
+<text x="908.25" y="640" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="975" y="597" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="1037.75" y="614" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="1037.75" y="627" font-size="10.5" fill="#202124" text-anchor="middle">301 ms</text>
+<text x="1037.75" y="640" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="1104.5" y="597" width="125.5" height="62" fill="#e6f4ea"/>
+<text x="1167.25" y="614" font-size="10.5" fill="#202124" text-anchor="middle">A: Success</text>
+<text x="1167.25" y="627" font-size="10.5" fill="#202124" text-anchor="middle">301 ms</text>
+<text x="1167.25" y="640" font-size="10.5" fill="#202124" text-anchor="middle">C waits ≤ 102 µs</text>
+<rect x="16" y="677" width="24" height="12" fill="#e6f4ea" stroke="#c4c7cc"/>
+<text x="46" y="687" font-size="12" fill="#202124" text-anchor="start">bus usable; nothing blocks or owns it longer than T<tspan dy="3.6" font-size="8.64">max</tspan></text>
+<rect x="461.17" y="677" width="24" height="12" fill="#fef7e0" stroke="#c4c7cc"/>
+<text x="491.17" y="687" font-size="12" fill="#202124" text-anchor="start">bus blocked or owned longer than T<tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6">, then usable again</tspan></text>
+<rect x="16" y="697" width="24" height="12" fill="#e3e7fb" stroke="#c4c7cc"/>
+<text x="46" y="707" font-size="12" fill="#202124" text-anchor="start">bus failure reported; failure mode until restart</text>
+<rect x="418.4" y="697" width="24" height="12" fill="#fde7e9" stroke="#c4c7cc"/>
+<text x="448.4" y="707" font-size="12" fill="#202124" text-anchor="start">data may be lost or wrong without an error</text>
+<rect x="787.2" y="697" width="24" height="12" fill="#f6c4c0" stroke="#c4c7cc"/>
+<text x="817.2" y="707" font-size="12" fill="#202124" text-anchor="start">bus unusable at the end and nothing reported</text>
+<text x="16" y="733" font-size="11.5" fill="#5f6368" text-anchor="start">Single timer columns differ only in the target stretch limit; figures timeout_&lt;scenario&gt;.svg show the timelines for 50 ms. Layered: the controller firmware is</text>
+<text x="16" y="750" font-size="11.5" fill="#5f6368" text-anchor="start">firmware/txn/txn.c, compiled unchanged. The limits (S<tspan dy="3.45" font-size="8.28">max</tspan><tspan dy="-3.45">, B</tspan><tspan dy="3.45" font-size="8.28">hold</tspan><tspan dy="-3.45">, t</tspan><tspan dy="3.45" font-size="8.28">stuck</tspan><tspan dy="-3.45">, wait after reset, line check, failure mode) follow the spec and the documented platform</tspan></text>
+<text x="16" y="767" font-size="11.5" fill="#5f6368" text-anchor="start">capabilities; the bridges do not implement them yet. txn.c has no bus-failure outcome yet: Aborted.</text>
+<text x="16" y="787" font-size="11.5" fill="#5f6368" text-anchor="start">Single timer: model of one supervision timer per transfer (no implementation). Assumed in both designs: a START inside a running transfer cuts it as a bus error (not</text>
+<text x="16" y="804" font-size="11.5" fill="#5f6368" text-anchor="start">documented; needs a hardware test).</text>
+</svg>

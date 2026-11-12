@@ -1,0 +1,339 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="892" viewBox="0 0 1240 892" font-family="Helvetica, Arial, sans-serif">
+<title>Timeout designs: Controller reset during a read</title>
+<defs>
+<pattern id="st-A" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#1f6fd1" stroke-width="2.4"/></pattern>
+<pattern id="st-B" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#e8710a" stroke-width="2.4"/></pattern>
+<pattern id="st-C" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#9334e6" stroke-width="2.4"/></pattern>
+<pattern id="st-D" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#188038" stroke-width="2.4"/></pattern>
+<pattern id="st-wait" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#bdc1c6" stroke-width="2.4"/></pattern>
+<pattern id="st-missing" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#c5221f" stroke-width="2.4"/></pattern>
+<pattern id="st-hold" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#202124" stroke-width="2.4"/></pattern>
+</defs>
+<rect width="1240" height="892" fill="#ffffff"/>
+<text x="16" y="28" font-size="18" fill="#202124" text-anchor="start" font-weight="bold">Timeout designs · Controller reset during a read</text>
+<text x="16" y="46" font-size="12" fill="#3c4043" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace">A resets in the sixth byte of a read from B while B sends a 0; B keeps SDA low. Once active again, A reads again.</text>
+<text x="16" y="64" font-size="12" fill="#3c4043" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace">F = 1 s · S<tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6"> = 5 ms · B</tspan><tspan dy="3.6" font-size="8.64">hold</tspan><tspan dy="-3.6"> = 14.9 ms · T</tspan><tspan dy="3.6" font-size="8.64">max</tspan><tspan dy="-3.6"> = 20 ms · t</tspan><tspan dy="3.6" font-size="8.64">stuck</tspan><tspan dy="-3.6"> = 100 ms · t</tspan><tspan dy="3.6" font-size="8.64">reset</tspan><tspan dy="-3.6"> = 50 ms (assumed) · byte 11.25 µs · main loop 100 µs (assumed)</tspan></text>
+<text x="16" y="98" font-size="13" fill="#202124" text-anchor="start" font-weight="bold">Layered limits · STM32U375, documented</text>
+<rect x="59" y="105" width="810" height="92" fill="none" class="plot-area"/>
+<line x1="64" y1="105" x2="64" y2="197" stroke="#e8eaed" stroke-width="1"/>
+<line x1="117.79" y1="105" x2="117.79" y2="197" stroke="#e8eaed" stroke-width="1"/>
+<line x1="250.08" y1="105" x2="250.08" y2="197" stroke="#e8eaed" stroke-width="1"/>
+<line x1="422.14" y1="105" x2="422.14" y2="197" stroke="#e8eaed" stroke-width="1"/>
+<line x1="600.13" y1="105" x2="600.13" y2="197" stroke="#e8eaed" stroke-width="1"/>
+<line x1="778.75" y1="105" x2="778.75" y2="197" stroke="#e8eaed" stroke-width="1"/>
+<line x1="864" y1="105" x2="864" y2="197" stroke="#e8eaed" stroke-width="1"/>
+<text x="52" y="119" font-size="11" fill="#5f6368" text-anchor="end">A</text>
+<rect x="64" y="108" width="800" height="14" fill="#f8f9fa"/>
+<rect x="255.13" y="108" width="292.94" height="14" fill="#bdc1c6" class="data"/>
+<rect x="548.07" y="108" width="25.6" height="14" fill="url(#st-wait)" class="data"/>
+<rect x="573.67" y="108" width="290.33" height="14" fill="#f6c4c0" class="data"/>
+<rect x="203.15" y="119" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="119" width="4.99" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="110" width="4.99" height="8" fill="#1f6fd1" class="data"/>
+<circle cx="255.13" cy="114" r="3" fill="#ffffff" stroke="#5f6368" stroke-width="1.5" class="data"/>
+<rect x="570.78" y="111" width="6" height="6" fill="#c5221f" class="data"/>
+<path d="M570.17,110.5L577.17,117.5M570.17,117.5L577.17,110.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<text x="52" y="137" font-size="11" fill="#5f6368" text-anchor="end">B</text>
+<rect x="64" y="126" width="800" height="14" fill="#f8f9fa"/>
+<rect x="600.96" y="126" width="263.04" height="14" fill="#f6c4c0" class="data"/>
+<rect x="203.15" y="137" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="137" width="613.86" height="3" fill="#80868b" class="data"/>
+<rect x="255.13" y="130" width="345.83" height="6" fill="#202124" class="data"/>
+<path d="M597.46,128.5L604.46,135.5M597.46,135.5L604.46,128.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<text x="52" y="155" font-size="11" fill="#5f6368" text-anchor="end">C</text>
+<rect x="64" y="144" width="800" height="14" fill="#f8f9fa"/>
+<rect x="600.96" y="144" width="263.04" height="14" fill="#f6c4c0" class="data"/>
+<rect x="203.15" y="155" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="155" width="613.86" height="3" fill="#80868b" class="data"/>
+<rect x="203.15" y="146" width="12.09" height="8" fill="#9334e6" class="data"/>
+<circle cx="215.23" cy="150" r="3" fill="#137333" stroke="#137333" stroke-width="1.5" class="data"/>
+<rect x="597.96" y="147" width="6" height="6" fill="#c5221f" class="data"/>
+<rect x="598.04" y="147" width="6" height="6" fill="#c5221f" class="data"/>
+<path d="M597.46,146.5L604.46,153.5M597.46,153.5L604.46,146.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<text x="52" y="173" font-size="11" fill="#5f6368" text-anchor="end">D</text>
+<rect x="64" y="162" width="800" height="14" fill="#f8f9fa"/>
+<rect x="600.96" y="162" width="263.04" height="14" fill="#f6c4c0" class="data"/>
+<rect x="203.15" y="173" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="173" width="613.86" height="3" fill="#80868b" class="data"/>
+<path d="M597.46,164.5L604.46,171.5M597.46,171.5L604.46,164.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<text x="52" y="191" font-size="11" fill="#5f6368" text-anchor="end">Bus</text>
+<rect x="64" y="180" width="800" height="14" fill="#f8f9fa"/>
+<rect x="203.15" y="182" width="12.09" height="10" fill="#dadce0" class="data"/>
+<rect x="250.14" y="182" width="4.99" height="10" fill="#dadce0" class="data"/>
+<rect x="255.13" y="182" width="345.83" height="10" fill="#202124" class="data"/>
+<text x="64" y="210" font-size="10" fill="#5f6368" text-anchor="middle">0</text>
+<text x="117.79" y="210" font-size="10" fill="#5f6368" text-anchor="middle">100 µs</text>
+<text x="250.08" y="210" font-size="10" fill="#5f6368" text-anchor="middle">1 ms</text>
+<text x="422.14" y="210" font-size="10" fill="#5f6368" text-anchor="middle">10 ms</text>
+<text x="600.13" y="210" font-size="10" fill="#5f6368" text-anchor="middle">100 ms</text>
+<text x="778.75" y="210" font-size="10" fill="#5f6368" text-anchor="middle">1 s</text>
+<text x="864" y="210" font-size="10" fill="#5f6368" text-anchor="middle">3 s</text>
+<text x="888" y="116" font-size="11.5" fill="#202124" text-anchor="start">A: lost in reset at 1.07 ms; Aborted (bus</text>
+<text x="888" y="131" font-size="11.5" fill="#202124" text-anchor="start">failure) at 71.2 ms</text>
+<text x="888" y="146" font-size="11.5" fill="#202124" text-anchor="start">C: longest wait 75.6 ms, 2 not successful</text>
+<text x="888" y="161" font-size="11.5" fill="#202124" text-anchor="start">Bus failure reported: A at 71.1 ms, B at</text>
+<text x="888" y="176" font-size="11.5" fill="#202124" text-anchor="start">101 ms, C at 101 ms, D at 101 ms</text>
+<text x="888" y="191" font-size="11.5" fill="#202124" text-anchor="start">At 3 s: bus free; failure mode: A B C D</text>
+<text x="16" y="244" font-size="13" fill="#202124" text-anchor="start" font-weight="bold">Layered limits · generic short timeout</text>
+<rect x="59" y="251" width="810" height="92" fill="none" class="plot-area"/>
+<line x1="64" y1="251" x2="64" y2="343" stroke="#e8eaed" stroke-width="1"/>
+<line x1="117.79" y1="251" x2="117.79" y2="343" stroke="#e8eaed" stroke-width="1"/>
+<line x1="250.08" y1="251" x2="250.08" y2="343" stroke="#e8eaed" stroke-width="1"/>
+<line x1="422.14" y1="251" x2="422.14" y2="343" stroke="#e8eaed" stroke-width="1"/>
+<line x1="600.13" y1="251" x2="600.13" y2="343" stroke="#e8eaed" stroke-width="1"/>
+<line x1="778.75" y1="251" x2="778.75" y2="343" stroke="#e8eaed" stroke-width="1"/>
+<line x1="864" y1="251" x2="864" y2="343" stroke="#e8eaed" stroke-width="1"/>
+<text x="52" y="265" font-size="11" fill="#5f6368" text-anchor="end">A</text>
+<rect x="64" y="254" width="800" height="14" fill="#f8f9fa"/>
+<rect x="255.13" y="254" width="292.94" height="14" fill="#bdc1c6" class="data"/>
+<rect x="548.07" y="254" width="25.6" height="14" fill="url(#st-wait)" class="data"/>
+<rect x="203.15" y="265" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="265" width="4.99" height="3" fill="#80868b" class="data"/>
+<rect x="600.96" y="265" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="654.31" y="265" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="685.62" y="265" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="707.87" y="265" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="725.14" y="265" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="739.26" y="265" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="751.2" y="265" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="761.55" y="265" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="770.68" y="265" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="778.84" y="265" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="256" width="4.99" height="8" fill="#1f6fd1" class="data"/>
+<rect x="600.96" y="256" width="1.5" height="8" fill="#1f6fd1" class="data"/>
+<rect x="654.31" y="256" width="1.5" height="8" fill="#1f6fd1" class="data"/>
+<rect x="685.62" y="256" width="1.5" height="8" fill="#1f6fd1" class="data"/>
+<rect x="707.87" y="256" width="1.5" height="8" fill="#1f6fd1" class="data"/>
+<rect x="725.14" y="256" width="1.5" height="8" fill="#1f6fd1" class="data"/>
+<rect x="739.26" y="256" width="1.5" height="8" fill="#1f6fd1" class="data"/>
+<rect x="751.2" y="256" width="1.5" height="8" fill="#1f6fd1" class="data"/>
+<rect x="761.55" y="256" width="1.5" height="8" fill="#1f6fd1" class="data"/>
+<rect x="770.68" y="256" width="1.5" height="8" fill="#1f6fd1" class="data"/>
+<rect x="778.84" y="256" width="1.5" height="8" fill="#1f6fd1" class="data"/>
+<circle cx="255.13" cy="260" r="3" fill="#ffffff" stroke="#5f6368" stroke-width="1.5" class="data"/>
+<circle cx="782.62" cy="260" r="3" fill="#ffffff" stroke="#e37400" stroke-width="1.5" class="data"/>
+<text x="52" y="283" font-size="11" fill="#5f6368" text-anchor="end">B</text>
+<rect x="64" y="272" width="800" height="14" fill="#f8f9fa"/>
+<rect x="600.96" y="272" width="263.04" height="14" fill="#f6c4c0" class="data"/>
+<rect x="203.15" y="283" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="283" width="350.83" height="3" fill="#80868b" class="data"/>
+<rect x="654.31" y="283" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="685.62" y="283" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="707.87" y="283" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="725.14" y="283" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="739.26" y="283" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="751.2" y="283" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="761.55" y="283" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="770.68" y="283" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="778.84" y="283" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="255.13" y="276" width="345.83" height="6" fill="#202124" class="data"/>
+<path d="M597.46,274.5L604.46,281.5M597.46,281.5L604.46,274.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<text x="52" y="301" font-size="11" fill="#5f6368" text-anchor="end">C</text>
+<rect x="64" y="290" width="800" height="14" fill="#f8f9fa"/>
+<rect x="600.96" y="290" width="263.04" height="14" fill="#f6c4c0" class="data"/>
+<rect x="203.15" y="301" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="301" width="350.83" height="3" fill="#80868b" class="data"/>
+<rect x="654.31" y="301" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="685.62" y="301" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="707.87" y="301" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="725.14" y="301" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="739.26" y="301" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="751.2" y="301" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="761.55" y="301" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="770.68" y="301" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="778.84" y="301" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="203.15" y="292" width="12.09" height="8" fill="#9334e6" class="data"/>
+<circle cx="215.23" cy="296" r="3" fill="#137333" stroke="#137333" stroke-width="1.5" class="data"/>
+<rect x="597.96" y="293" width="6" height="6" fill="#c5221f" class="data"/>
+<rect x="598.04" y="293" width="6" height="6" fill="#c5221f" class="data"/>
+<path d="M597.46,292.5L604.46,299.5M597.46,299.5L604.46,292.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<text x="52" y="319" font-size="11" fill="#5f6368" text-anchor="end">D</text>
+<rect x="64" y="308" width="800" height="14" fill="#f8f9fa"/>
+<rect x="600.96" y="308" width="263.04" height="14" fill="#f6c4c0" class="data"/>
+<rect x="203.15" y="319" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="319" width="350.83" height="3" fill="#80868b" class="data"/>
+<rect x="654.31" y="319" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="685.62" y="319" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="707.87" y="319" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="725.14" y="319" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="739.26" y="319" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="751.2" y="319" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="761.55" y="319" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="770.68" y="319" width="1.5" height="3" fill="#80868b" class="data"/>
+<rect x="778.84" y="319" width="1.5" height="3" fill="#80868b" class="data"/>
+<path d="M597.46,310.5L604.46,317.5M597.46,317.5L604.46,310.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round" class="data"/>
+<text x="52" y="337" font-size="11" fill="#5f6368" text-anchor="end">Bus</text>
+<rect x="64" y="326" width="800" height="14" fill="#f8f9fa"/>
+<rect x="203.15" y="328" width="12.09" height="10" fill="#dadce0" class="data"/>
+<rect x="250.14" y="328" width="4.99" height="10" fill="#dadce0" class="data"/>
+<rect x="255.13" y="328" width="345.83" height="10" fill="#202124" class="data"/>
+<rect x="600.96" y="328" width="1.5" height="10" fill="#dadce0" class="data"/>
+<rect x="654.31" y="328" width="1.5" height="10" fill="#dadce0" class="data"/>
+<rect x="685.62" y="328" width="1.5" height="10" fill="#dadce0" class="data"/>
+<rect x="707.87" y="328" width="1.5" height="10" fill="#dadce0" class="data"/>
+<rect x="725.14" y="328" width="1.5" height="10" fill="#dadce0" class="data"/>
+<rect x="739.26" y="328" width="1.5" height="10" fill="#dadce0" class="data"/>
+<rect x="751.2" y="328" width="1.5" height="10" fill="#dadce0" class="data"/>
+<rect x="761.55" y="328" width="1.5" height="10" fill="#dadce0" class="data"/>
+<rect x="770.68" y="328" width="1.5" height="10" fill="#dadce0" class="data"/>
+<rect x="778.84" y="328" width="1.5" height="10" fill="#dadce0" class="data"/>
+<text x="64" y="356" font-size="10" fill="#5f6368" text-anchor="middle">0</text>
+<text x="117.79" y="356" font-size="10" fill="#5f6368" text-anchor="middle">100 µs</text>
+<text x="250.08" y="356" font-size="10" fill="#5f6368" text-anchor="middle">1 ms</text>
+<text x="422.14" y="356" font-size="10" fill="#5f6368" text-anchor="middle">10 ms</text>
+<text x="600.13" y="356" font-size="10" fill="#5f6368" text-anchor="middle">100 ms</text>
+<text x="778.75" y="356" font-size="10" fill="#5f6368" text-anchor="middle">1 s</text>
+<text x="864" y="356" font-size="10" fill="#5f6368" text-anchor="middle">3 s</text>
+<text x="888" y="262" font-size="11.5" fill="#202124" text-anchor="start">A: lost in reset at 1.07 ms; Timeout (last</text>
+<text x="888" y="277" font-size="11.5" fill="#202124" text-anchor="start">AddrNak) at 1.05 s</text>
+<text x="888" y="292" font-size="11.5" fill="#202124" text-anchor="start">C: longest wait 75.6 ms, 2 not successful</text>
+<text x="888" y="307" font-size="11.5" fill="#202124" text-anchor="start">Bus failure reported: B at 101 ms, C at</text>
+<text x="888" y="322" font-size="11.5" fill="#202124" text-anchor="start">101 ms, D at 101 ms</text>
+<text x="888" y="337" font-size="11.5" fill="#202124" text-anchor="start">At 3 s: bus free; failure mode: B C D</text>
+<text x="16" y="390" font-size="13" fill="#202124" text-anchor="start" font-weight="bold">Single timer · terminate = release (get off the bus) · stretch limit 50 ms</text>
+<rect x="59" y="397" width="810" height="92" fill="none" class="plot-area"/>
+<line x1="64" y1="397" x2="64" y2="489" stroke="#e8eaed" stroke-width="1"/>
+<line x1="117.79" y1="397" x2="117.79" y2="489" stroke="#e8eaed" stroke-width="1"/>
+<line x1="250.08" y1="397" x2="250.08" y2="489" stroke="#e8eaed" stroke-width="1"/>
+<line x1="422.14" y1="397" x2="422.14" y2="489" stroke="#e8eaed" stroke-width="1"/>
+<line x1="600.13" y1="397" x2="600.13" y2="489" stroke="#e8eaed" stroke-width="1"/>
+<line x1="778.75" y1="397" x2="778.75" y2="489" stroke="#e8eaed" stroke-width="1"/>
+<line x1="864" y1="397" x2="864" y2="489" stroke="#e8eaed" stroke-width="1"/>
+<text x="52" y="411" font-size="11" fill="#5f6368" text-anchor="end">A</text>
+<rect x="64" y="400" width="800" height="14" fill="#f8f9fa"/>
+<rect x="255.13" y="400" width="292.94" height="14" fill="#bdc1c6" class="data"/>
+<rect x="203.15" y="411" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="411" width="4.99" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="402" width="4.99" height="8" fill="#1f6fd1" class="data"/>
+<circle cx="255.13" cy="406" r="3" fill="#ffffff" stroke="#5f6368" stroke-width="1.5" class="data"/>
+<circle cx="782.62" cy="406" r="3" fill="#ffffff" stroke="#e37400" stroke-width="1.5" class="data"/>
+<text x="52" y="429" font-size="11" fill="#5f6368" text-anchor="end">B</text>
+<rect x="64" y="418" width="800" height="14" fill="#f8f9fa"/>
+<rect x="203.15" y="429" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="429" width="613.86" height="3" fill="#80868b" class="data"/>
+<rect x="255.13" y="422" width="608.87" height="6" fill="#202124" class="data"/>
+<text x="52" y="447" font-size="11" fill="#5f6368" text-anchor="end">C</text>
+<rect x="64" y="436" width="800" height="14" fill="#f8f9fa"/>
+<rect x="203.15" y="447" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="447" width="530.57" height="3" fill="#80868b" class="data"/>
+<rect x="203.15" y="438" width="12.09" height="8" fill="#9334e6" class="data"/>
+<circle cx="215.23" cy="442" r="3" fill="#137333" stroke="#137333" stroke-width="1.5" class="data"/>
+<circle cx="780.7" cy="442" r="3" fill="#ffffff" stroke="#e37400" stroke-width="1.5" class="data"/>
+<circle cx="833.52" cy="442" r="3" fill="#ffffff" stroke="#e37400" stroke-width="1.5" class="data"/>
+<text x="52" y="465" font-size="11" fill="#5f6368" text-anchor="end">D</text>
+<rect x="64" y="454" width="800" height="14" fill="#f8f9fa"/>
+<rect x="203.15" y="465" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="465" width="613.86" height="3" fill="#80868b" class="data"/>
+<text x="52" y="483" font-size="11" fill="#5f6368" text-anchor="end">Bus</text>
+<rect x="64" y="472" width="800" height="14" fill="#f8f9fa"/>
+<rect x="203.15" y="474" width="12.09" height="10" fill="#dadce0" class="data"/>
+<rect x="250.14" y="474" width="4.99" height="10" fill="#dadce0" class="data"/>
+<rect x="255.13" y="474" width="608.87" height="10" fill="#202124" class="data"/>
+<text x="64" y="502" font-size="10" fill="#5f6368" text-anchor="middle">0</text>
+<text x="117.79" y="502" font-size="10" fill="#5f6368" text-anchor="middle">100 µs</text>
+<text x="250.08" y="502" font-size="10" fill="#5f6368" text-anchor="middle">1 ms</text>
+<text x="422.14" y="502" font-size="10" fill="#5f6368" text-anchor="middle">10 ms</text>
+<text x="600.13" y="502" font-size="10" fill="#5f6368" text-anchor="middle">100 ms</text>
+<text x="778.75" y="502" font-size="10" fill="#5f6368" text-anchor="middle">1 s</text>
+<text x="864" y="502" font-size="10" fill="#5f6368" text-anchor="middle">3 s</text>
+<text x="888" y="408" font-size="11.5" fill="#202124" text-anchor="start">A: lost in reset at 1.07 ms; Timeout (flush</text>
+<text x="888" y="423" font-size="11.5" fill="#202124" text-anchor="start">time) at 1.05 s</text>
+<text x="888" y="438" font-size="11.5" fill="#202124" text-anchor="start">C: longest wait 1.98 s, 2 not successful</text>
+<text x="888" y="453" font-size="11.5" fill="#202124" text-anchor="start">Bus failure reported: none</text>
+<text x="888" y="468" font-size="11.5" fill="#202124" text-anchor="start">At 3 s: bus SDA held low by B</text>
+<text x="16" y="536" font-size="13" fill="#202124" text-anchor="start" font-weight="bold">Single timer · terminate = STOP when possible · stretch limit 50 ms</text>
+<rect x="59" y="543" width="810" height="92" fill="none" class="plot-area"/>
+<line x1="64" y1="543" x2="64" y2="635" stroke="#e8eaed" stroke-width="1"/>
+<line x1="117.79" y1="543" x2="117.79" y2="635" stroke="#e8eaed" stroke-width="1"/>
+<line x1="250.08" y1="543" x2="250.08" y2="635" stroke="#e8eaed" stroke-width="1"/>
+<line x1="422.14" y1="543" x2="422.14" y2="635" stroke="#e8eaed" stroke-width="1"/>
+<line x1="600.13" y1="543" x2="600.13" y2="635" stroke="#e8eaed" stroke-width="1"/>
+<line x1="778.75" y1="543" x2="778.75" y2="635" stroke="#e8eaed" stroke-width="1"/>
+<line x1="864" y1="543" x2="864" y2="635" stroke="#e8eaed" stroke-width="1"/>
+<text x="52" y="557" font-size="11" fill="#5f6368" text-anchor="end">A</text>
+<rect x="64" y="546" width="800" height="14" fill="#f8f9fa"/>
+<rect x="255.13" y="546" width="292.94" height="14" fill="#bdc1c6" class="data"/>
+<rect x="203.15" y="557" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="557" width="4.99" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="548" width="4.99" height="8" fill="#1f6fd1" class="data"/>
+<circle cx="255.13" cy="552" r="3" fill="#ffffff" stroke="#5f6368" stroke-width="1.5" class="data"/>
+<circle cx="782.62" cy="552" r="3" fill="#ffffff" stroke="#e37400" stroke-width="1.5" class="data"/>
+<text x="52" y="575" font-size="11" fill="#5f6368" text-anchor="end">B</text>
+<rect x="64" y="564" width="800" height="14" fill="#f8f9fa"/>
+<rect x="203.15" y="575" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="575" width="613.86" height="3" fill="#80868b" class="data"/>
+<rect x="255.13" y="568" width="608.87" height="6" fill="#202124" class="data"/>
+<text x="52" y="593" font-size="11" fill="#5f6368" text-anchor="end">C</text>
+<rect x="64" y="582" width="800" height="14" fill="#f8f9fa"/>
+<rect x="203.15" y="593" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="593" width="530.57" height="3" fill="#80868b" class="data"/>
+<rect x="203.15" y="584" width="12.09" height="8" fill="#9334e6" class="data"/>
+<circle cx="215.23" cy="588" r="3" fill="#137333" stroke="#137333" stroke-width="1.5" class="data"/>
+<circle cx="780.7" cy="588" r="3" fill="#ffffff" stroke="#e37400" stroke-width="1.5" class="data"/>
+<circle cx="833.52" cy="588" r="3" fill="#ffffff" stroke="#e37400" stroke-width="1.5" class="data"/>
+<text x="52" y="611" font-size="11" fill="#5f6368" text-anchor="end">D</text>
+<rect x="64" y="600" width="800" height="14" fill="#f8f9fa"/>
+<rect x="203.15" y="611" width="12.09" height="3" fill="#80868b" class="data"/>
+<rect x="250.14" y="611" width="613.86" height="3" fill="#80868b" class="data"/>
+<text x="52" y="629" font-size="11" fill="#5f6368" text-anchor="end">Bus</text>
+<rect x="64" y="618" width="800" height="14" fill="#f8f9fa"/>
+<rect x="203.15" y="620" width="12.09" height="10" fill="#dadce0" class="data"/>
+<rect x="250.14" y="620" width="4.99" height="10" fill="#dadce0" class="data"/>
+<rect x="255.13" y="620" width="608.87" height="10" fill="#202124" class="data"/>
+<text x="64" y="648" font-size="10" fill="#5f6368" text-anchor="middle">0</text>
+<text x="117.79" y="648" font-size="10" fill="#5f6368" text-anchor="middle">100 µs</text>
+<text x="250.08" y="648" font-size="10" fill="#5f6368" text-anchor="middle">1 ms</text>
+<text x="422.14" y="648" font-size="10" fill="#5f6368" text-anchor="middle">10 ms</text>
+<text x="600.13" y="648" font-size="10" fill="#5f6368" text-anchor="middle">100 ms</text>
+<text x="778.75" y="648" font-size="10" fill="#5f6368" text-anchor="middle">1 s</text>
+<text x="864" y="648" font-size="10" fill="#5f6368" text-anchor="middle">3 s</text>
+<text x="888" y="554" font-size="11.5" fill="#202124" text-anchor="start">A: lost in reset at 1.07 ms; Timeout (flush</text>
+<text x="888" y="569" font-size="11.5" fill="#202124" text-anchor="start">time) at 1.05 s</text>
+<text x="888" y="584" font-size="11.5" fill="#202124" text-anchor="start">C: longest wait 1.98 s, 2 not successful</text>
+<text x="888" y="599" font-size="11.5" fill="#202124" text-anchor="start">Bus failure reported: none</text>
+<text x="888" y="614" font-size="11.5" fill="#202124" text-anchor="start">At 3 s: bus SDA held low by B</text>
+<rect x="16" y="672" width="24" height="12" fill="#1f6fd1"/>
+<text x="46" y="682" font-size="12" fill="#202124" text-anchor="start">owns the bus, START to STOP</text>
+<rect x="286.64" y="672" width="24" height="12" fill="url(#st-B)"/>
+<text x="316.64" y="682" font-size="12" fill="#202124" text-anchor="start">target stretches (holds SCL)</text>
+<rect x="546.72" y="672" width="24" height="12" fill="url(#st-hold)"/>
+<text x="576.72" y="682" font-size="12" fill="#202124" text-anchor="start">controller holds SCL (firmware stalled)</text>
+<rect x="895.6" y="672" width="24" height="12" fill="#202124"/>
+<text x="925.6" y="682" font-size="12" fill="#202124" text-anchor="start">holds SDA low</text>
+<rect x="16" y="692" width="24" height="12" fill="#80868b"/>
+<text x="46" y="702" font-size="12" fill="#202124" text-anchor="start">busy flag set (thin bar)</text>
+<rect x="240.8" y="692" width="24" height="12" fill="#bdc1c6"/>
+<text x="270.8" y="702" font-size="12" fill="#202124" text-anchor="start">reset</text>
+<rect x="328.8" y="692" width="24" height="12" fill="url(#st-wait)"/>
+<text x="358.8" y="702" font-size="12" fill="#202124" text-anchor="start">wait after reset; booting</text>
+<rect x="565.6" y="692" width="24" height="12" fill="#f6c4c0"/>
+<text x="595.6" y="702" font-size="12" fill="#202124" text-anchor="start">failure mode</text>
+<rect x="708.8" y="692" width="24" height="12" fill="#fde293"/>
+<text x="738.8" y="702" font-size="12" fill="#202124" text-anchor="start">firmware stalled or hung</text>
+<rect x="943.2" y="692" width="24" height="12" fill="#dadce0"/>
+<text x="973.2" y="702" font-size="12" fill="#202124" text-anchor="start">bus: transfer</text>
+<rect x="1088.8" y="692" width="24" height="12" fill="#5f6368"/>
+<text x="1118.8" y="702" font-size="12" fill="#202124" text-anchor="start">bus: SCL low</text>
+<rect x="16" y="712" width="24" height="12" fill="url(#st-missing)"/>
+<text x="46" y="722" font-size="12" fill="#202124" text-anchor="start">bus: missing STOP</text>
+<circle cx="215.84" cy="718" r="3" fill="#137333" stroke="#137333" stroke-width="1.5"/>
+<text x="233.84" y="722" font-size="12" fill="#202124" text-anchor="start">Success</text>
+<rect x="317.4" y="715" width="6" height="6" fill="#e37400"/>
+<text x="338.4" y="722" font-size="12" fill="#202124" text-anchor="start">AddrNak, DataNak</text>
+<circle cx="496.24" cy="718" r="3" fill="#ffffff" stroke="#e37400" stroke-width="1.5"/>
+<text x="514.24" y="722" font-size="12" fill="#202124" text-anchor="start">Timeout</text>
+<rect x="602.6" y="715" width="6" height="6" fill="#c5221f"/>
+<text x="623.6" y="722" font-size="12" fill="#202124" text-anchor="start">Aborted</text>
+<circle cx="710.16" cy="718" r="3" fill="#ffffff" stroke="#5f6368" stroke-width="1.5"/>
+<text x="728.16" y="722" font-size="12" fill="#202124" text-anchor="start">lost in reset</text>
+<path d="M852.26,714.5L859.26,721.5M852.26,721.5L859.26,714.5" stroke="#202124" stroke-width="1.6" stroke-linecap="round"/>
+<text x="873.76" y="722" font-size="12" fill="#202124" text-anchor="start">bus failure reported</text>
+<text x="16" y="748" font-size="11.5" fill="#5f6368" text-anchor="start">Time axis logarithmic: x ∝ log(1 + t / 100 µs). A submits at 1 ms; C writes 8 bytes to D every 25 ms. Lanes A to D: one participant each, the thin bar is its busy</text>
+<text x="16" y="765" font-size="11.5" fill="#5f6368" text-anchor="start">flag; Bus: line state.</text>
+<text x="16" y="785" font-size="11.5" fill="#5f6368" text-anchor="start">Layered: the controller firmware is firmware/txn/txn.c, compiled unchanged. The limits (S<tspan dy="3.45" font-size="8.28">max</tspan><tspan dy="-3.45">, B</tspan><tspan dy="3.45" font-size="8.28">hold</tspan><tspan dy="-3.45">, t</tspan><tspan dy="3.45" font-size="8.28">stuck</tspan><tspan dy="-3.45">, wait after reset, line check, failure mode) follow the spec</tspan></text>
+<text x="16" y="802" font-size="11.5" fill="#5f6368" text-anchor="start">and the documented platform capabilities; the bridges do not implement them yet. txn.c has no bus-failure outcome yet: Aborted.</text>
+<text x="16" y="822" font-size="11.5" fill="#5f6368" text-anchor="start">Single timer: model of one supervision timer per transfer (no implementation). Assumed in both designs: a START inside a running transfer cuts it as a bus error (not</text>
+<text x="16" y="839" font-size="11.5" fill="#5f6368" text-anchor="start">documented; needs a hardware test).</text>
+<text x="16" y="859" font-size="11.5" fill="#5f6368" text-anchor="start">Evidence: byte: measured: 9 bit-times at the observed 800 kbit/s; t<tspan dy="3.45" font-size="8.28">buf</tspan><tspan dy="-3.45">: measured; t</tspan><tspan dy="3.45" font-size="8.28">reset</tspan><tspan dy="-3.45">: assumed, to be measured; loop: assumed main-loop period; c_period: assumed</tspan></text>
+<text x="16" y="876" font-size="11.5" fill="#5f6368" text-anchor="start">background traffic.</text>
+</svg>

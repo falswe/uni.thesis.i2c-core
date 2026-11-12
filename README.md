@@ -8,7 +8,7 @@ Protocol specification, host tooling, and shared conformance tests for I2C bridg
 - `docs/target_model.md` — normative target-side register-file behavior
 - `docs/transaction_layer.md` — draft: how a participant handles a transfer on the bus (retries, budgets, access policy, hold limits, recovery)
 - `docs/platform_capabilities.md` — informative: what each platform documents, implements and has verified in hardware for the transaction layer, and the hardware tests still needed
-- `docs/diagrams/` — PlantUML sequence diagram of the transaction-layer behaviour (`sd_i2c_behavior.puml`), simulator figures (`policy_*.svg`), plus SCL/SDA timing diagrams (`td_*.svg`) for write, read and mem_read, coloured by the driving device
+- `docs/diagrams/` — PlantUML sequence diagram of the transaction-layer behaviour (`sd_i2c_behavior.puml`), simulator figures (`policy_*.svg`, `timeout_*.svg`), plus SCL/SDA timing diagrams (`td_*.svg`) for write, read and mem_read, coloured by the driving device
 - `firmware/txn/` — portable C transaction layer (queue, budget `F`, retries, report; baseline access policy) compiled into the bridge firmware; `tests/test_txn.c` runs it on the host against a fake platform
 - `host/i2c_test_host/` — TCP line backends, protocol adapters, peer loading, and DUT bring-up
 - `host/tests/` — host-only unit tests and hardware conformance tests
@@ -18,6 +18,7 @@ Protocol specification, host tooling, and shared conformance tests for I2C bridg
 - `tools/watch_tcp` — raw TCP traffic monitor
 - `tools/i2c_timing_diagrams.py` — regenerates the `docs/diagrams/td_*.svg` timing diagrams
 - `tools/bus_policy_sim.py` — simulates four multi-controller bus access policies and writes `docs/diagrams/policy_*.svg`; `--check` runs its self-checks
+- `tools/bus_timeout_sim.py` — simulates how bus faults (slow or hung target, controller stall or reset, stuck SDA, late joiner) end under the layered limits of the transaction layer and under a single supervision timer; drives the real `firmware/txn/txn.c` (needs `gcc`) and writes `docs/diagrams/timeout_*.svg`; `--check` runs its self-checks, `--params` takes private values and writes outside the repository
 
 Firmware is built in sibling repositories:
 
